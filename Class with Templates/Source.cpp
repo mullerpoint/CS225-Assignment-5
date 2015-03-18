@@ -253,18 +253,18 @@ void process_menu_in(char inchar)
 			if (typeid(*mixed_array[ItemNum]) == typeid(Music))
 			{
 				Music* music_ptr = (Music*)mixed_array[ItemNum];
-				(*music_ptr).setRunTime(runTime);
+				(*music_ptr).setrunTime(runTime);
 			}
 			else
 			{
 				Videos* video_ptr = (Videos*)mixed_array[ItemNum];
-				(*video_ptr).setRunTime(runTime);
+				(*video_ptr).setrunTime(runTime);
 			}
 
 		}
 		else
 		{
-			std::cout << "Error : you cannot set the runtime on a Book or Media Item object" << std::endl;
+			std::cout << "Error : you cannot set the runTime on a Book or Media Item object" << std::endl;
 		}
 	}
 	break;
@@ -273,13 +273,13 @@ void process_menu_in(char inchar)
 	case 'C':
 	{
 		int born, died;
-		std::string name;
+		std::string name_;
 
 		if (interactive)
 		{
-			std::cout << "Please enter the Authors name :";
-			std::getline(std::cin, name);
-			Auth_ptr[*AuthNum_ptr].setName(name);
+			std::cout << "Please enter the Authors name_ :";
+			std::getline(std::cin, name_);
+			Auth_ptr[*AuthNum_ptr].setName(name_);
 
 
 			std::cout << "Please enter the Authors birth year (yyyy), Zero(0) for none :";
@@ -316,12 +316,12 @@ void process_menu_in(char inchar)
 	case 'E':
 	{
 		int num, start, end;
-		std::string name;
+		std::string name_;
 
 		if (interactive)
 		{
-			std::cout << "Please enter the Element name : ";
-			std::getline(std::cin, name);
+			std::cout << "Please enter the Element name_ : ";
+			std::getline(std::cin, name_);
 
 			std::cout << "Please enter the Element start, Zero(0) for none : ";
 			std::cin >> start;
@@ -340,23 +340,23 @@ void process_menu_in(char inchar)
 			std::cin >> end;
 			std::cin.ignore(1, '\n');
 
-			std::getline(std::cin, name);
-			Auth_ptr[*AuthNum_ptr].setName(name);
+			std::getline(std::cin, name_);
+			Auth_ptr[*AuthNum_ptr].setName(name_);
 		}
 
 
-		(*mixed_array[ItemNum]).setElement(start, end, name, num = 0);
+		(*mixed_array[ItemNum]).setElement(start, end, name_, num = 0);
 
 	}
 	break;
 
-	//set music/video producer/director respectivly
+	//set music/video Producer/director respectivly
 	case 'F':
 	{
 		if (!(typeid(*mixed_array[ItemNum]) == typeid(Books) || typeid(*mixed_array[ItemNum]) == typeid(MediaItems)))
 		{
 			std::string executive;
-			std::cout << "Please enter the Producer or Director : ";
+			std::cout << "Please enter the Producer or director : ";
 			std::getline(std::cin, executive);
 
 
@@ -364,7 +364,7 @@ void process_menu_in(char inchar)
 			{
 				//create a simple variable that points to cast version of the object
 				Music* music_ptr = (Music*)mixed_array[ItemNum];
-				//set the producer
+				//set the Producer
 				(*music_ptr).setExecutive(executive);
 			}
 			else
@@ -377,7 +377,7 @@ void process_menu_in(char inchar)
 		}
 		else
 		{
-			std::cout << "Error : you cannot set the producer or director on a Book or Media Item object" << std::endl;
+			std::cout << "Error : you cannot set the Producer or director on a Book or Media Item object" << std::endl;
 		}
 	}
 	break;
@@ -419,7 +419,7 @@ void process_menu_in(char inchar)
 	}
 	break;
 
-	//set Music genre
+	//set Music GENRE
 	case 'K':
 	{
 		if (typeid(*mixed_array[ItemNum]) == typeid(Music))
@@ -427,41 +427,41 @@ void process_menu_in(char inchar)
 			//create a simple variable that points to cast version of the object
 			Music* music_ptr = (Music*)mixed_array[ItemNum];
 
-			//get the genre string from input
-			std::string genreStr;
-			std::cout << "Please enter the Genre : ";
-			std::getline(std::cin, genreStr);
-			for (auto & c : genreStr) c = toupper(c); //convert to uppercase
+			//get the GENRE string from input
+			std::string GenreStr;
+			std::cout << "Please enter the GENRE : ";
+			std::getline(std::cin, GenreStr);
+			for (auto & c : GenreStr) c = toupper(c); //convert to uppercase
 
-			//create a bool variable to determine if the genre has been set
-			bool genreSet = false;
+			//create a bool variable to determine if the GENRE has been set
+			bool GENRESet = false;
 
 			//variable to keep track of type
-			Music::Genre type = Music::Genre::ROC;
+			Music::GENRE type = Music::GENRE::ROC;
 
-			//for loop to try find a match to one of the defined genres
-			while ((type != Music::Genre::END) && (genreSet == false))
+			//for loop to try find a match to one of the defined GENREs
+			while ((type != Music::GENRE::END) && (GENRESet == false))
 			{
-				//get the token for searching the genre string
-				std::string typeStr = (*music_ptr).dispGenreSht(type);
+				//get the token for searching the GENRE string
+				std::string typeStr = (*music_ptr).dispGENRESht(type);
 
-				//if the token matches something in the genre string set the object to the genre
-				if (genreStr.find(typeStr) != std::string::npos)
+				//if the token matches something in the GENRE string set the object to the GENRE
+				if (GenreStr.find(typeStr) != std::string::npos)
 				{
-					(*music_ptr).setGenre(type);
-					genreSet = true;
-				} //if genreStr
-				type = Music::Genre(type + 1);
+					(*music_ptr).setGENRE(type);
+					GENRESet = true;
+				} //if GenreStr
+				type = Music::GENRE(type + 1);
 			}//while
-			if (genreSet == false)
+			if (GENRESet == false)
 			{
-				(*music_ptr).setGenre(Music::Genre::OTHER);
+				(*music_ptr).setGENRE(Music::GENRE::OTHER);
 			}
 		} //if type id
 	}//case
 	break;
 
-	//List Music by genre
+	//List Music by GENRE
 	case 'L':
 	{
 		int count = 0;
@@ -488,10 +488,10 @@ void process_menu_in(char inchar)
 		// if a music was found print out 
 		else if (found == true)
 		{
-			Music::Genre type = Music::Genre::ROC;
-			while (type != Music::Genre::END)
+			Music::GENRE type = Music::GENRE::ROC;
+			while (type != Music::GENRE::END)
 			{
-				std::cout << std::endl << "===== Genre : " << (*firstMusicObj).dispGenre(type) << " =====" << std::endl;
+				std::cout << std::endl << "===== GENRE : " << (*firstMusicObj).dispGENRE(type) << " =====" << std::endl;
 				count = 0;
 				numPrinted = 0;
 				while (count < OBJS_MI)
@@ -499,7 +499,7 @@ void process_menu_in(char inchar)
 					if (typeid(*mixed_array[count]) == typeid(Music))
 					{
 						Music* music_ptr = (Music*)mixed_array[count];
-						if ((*music_ptr).dispGenreSht((*music_ptr).getGenre()) == (*music_ptr).dispGenreSht(type))
+						if ((*music_ptr).dispGENRESht((*music_ptr).getGENRE()) == (*music_ptr).dispGENRESht(type))
 						//comparing strings to allow comparison, enums refused to compile
 						{
 							if (!((*music_ptr).isEmpty()))
@@ -508,18 +508,18 @@ void process_menu_in(char inchar)
 								(*mixed_array[count]).toCout();
 								numPrinted++;
 							} //if isEmpty
-						} //if genre
+						} //if GENRE
 					} //if type id
 					count++;
 				}//while
 
-				// if there were no songs of that genre print that out
+				// if there were no songs of that GENRE print that out
 				if (numPrinted == 0)
 				{
 					std::cout << "No Songs Found" << std::endl;
 				} //if numPrinted
 
-				type = Music::Genre(type + 1);
+				type = Music::GENRE(type + 1);
 			} //while
 		} //else if
 
@@ -531,13 +531,13 @@ void process_menu_in(char inchar)
 		print_menu();
 		break;
 
-		// enter item name menu option
+		// enter item name_ menu option
 	case 'N':
 	{
-		std::string new_name;
+		std::string new_name_;
 		std::cout << "Enter Media Item Title : ";
-		std::getline(std::cin, new_name);
-		(*mixed_array[ItemNum]).setName(new_name);
+		std::getline(std::cin, new_name_);
+		(*mixed_array[ItemNum]).setName(new_name_);
 	}
 	break;
 
@@ -662,12 +662,12 @@ void print_menu()
 		<< "C - Create author" << std::endl
 		<< "D - Display selected Media Item data" << std::endl
 		<< "E - Add Media Item element" << std::endl
-		<< "F - Set Music / Video Producer / Director respectively" << std::endl
+		<< "F - Set Music / Video Producer / director respectively" << std::endl
 		<< "J - Set Book ISBN" << std::endl
 		<< "K - set Music Genre" << std::endl
 		<< "L - Display Music Items by Genre" << std::endl
 		<< "M - Print this menu" << std::endl
-		<< "N - Set Media Item name" << std::endl
+		<< "N - Set Media Item name_" << std::endl
 		<< "Q - Quit this program" << std::endl
 		<< "P - Set Media Item pages" << std::endl
 		<< "R - Display program memory usage" << std::endl

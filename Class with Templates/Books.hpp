@@ -10,11 +10,11 @@ class Books :
 	public MediaItems
 {
 private:
-	std::string isbn;
-	int pages;
-	bool in_print;
-	bool in_print_def;
-	Books* sequel_ptr;
+	std::string isbn; //string of the book ISBN
+	int pages; //pages in the book
+	bool in_print; // if the book is still in print or not
+	bool in_print_def; // if the in_print variable has been set
+	Books* sequel_ptr_; // pointer to the sequel book item
 
 
 public:

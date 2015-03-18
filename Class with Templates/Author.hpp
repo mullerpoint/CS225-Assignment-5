@@ -8,13 +8,13 @@
 class Author
 {
 private:
-	int birthYear;
-	int deathYear;
-	std::string name;
+	int birthYear_; // birth year of the author
+	int deathYear_; // death year of the author
+	std::string name_; // name of the author
 
-	bool hasData;
+	bool hasData_; // variable to keep track of whether an object has been initialized by the user
 
-	static int active;
+	static int active_; //number of active author objects
 
 public:
 	Author();

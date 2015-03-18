@@ -28,8 +28,8 @@
 #define DEF_PRICE 0.00
 #define DEF_PUB 1970
 #define ELEMENT_ZERO 0
-#define DEF_DIRECTOR ""
-#define DEF_RUNTIME 0.0
+#define DEF_director_ ""
+#define DEF_runTime_ 0.0
 #define TEXT_WIDTH 20
 
 //Function prototype for insertion operator
@@ -37,8 +37,8 @@ std::ostream& operator<<(std::ostream &out, Videos &Video);
 
 Videos::Videos() : MediaItems()
 {
-	Videos::setExecutive(DEF_DIRECTOR);
-	Videos::setRunTime(DEF_RUNTIME);
+	Videos::setExecutive(DEF_director_);
+	Videos::setrunTime(DEF_runTime_);
 	Videos::setSequel(NULL);
 
 	Videos::modified(false);
@@ -50,20 +50,20 @@ Videos::~Videos()
 	active--;
 }
 
-//Set video Director
-int Videos::setExecutive(std::string new_Director)
+//Set video director_
+int Videos::setExecutive(std::string new_director_)
 {
-	Videos::director = new_Director;
+	Videos::director_ = new_director_;
 	Videos::modified(true);
 	return 0;
 }
 
 //Set Video Run time
-int Videos::setRunTime(double new_RunTime)
+int Videos::setrunTime(double new_runTime_)
 {
-	if (new_RunTime >= 0)
+	if (new_runTime_ >= 0)
 	{
-		Videos::runTime = new_RunTime;
+		Videos::runTime_ = new_runTime_;
 		Videos::modified(true);
 		return 0;
 	}
@@ -77,27 +77,27 @@ int Videos::setRunTime(double new_RunTime)
 //Set Sequel
 int Videos::setSequel(Videos* new_sequel)
 {
-	Videos::sequel_ptr = new_sequel;
+	Videos::sequel_ptr_ = new_sequel;
 	Videos::modified(true);
 	return 0;
 }
 
-//get director
-const std::string Videos::getDirector()
+//get director_
+const std::string Videos::getdirector()
 {
-	return director;
+	return director_;
 }
 
 //get run time
-const double Videos::getRunTime()
+const double Videos::getrunTime()
 {
-	return runTime;
+	return runTime_;
 }
 
 //get sequel pointer
 Videos* Videos::getSequel()
 {
-	return sequel_ptr;
+	return sequel_ptr_;
 }
 
 const int Videos::toCout()
@@ -126,7 +126,7 @@ std::ostream& operator<<(std::ostream &out, Videos &Video)
 	if (Video.isEmpty() == true); //if empty print nothing
 	else if (Video.isEmpty() == false) //if not empty print data thats available
 	{
-		// display item name if present
+		// display item name_ if present
 		if (Video.getName() == DEF_NAME)
 		{
 			out << std::left << std::setw(TEXT_WIDTH) << "Media Item Name" << " : " << "No Name Set" << std::endl;
@@ -157,18 +157,18 @@ std::ostream& operator<<(std::ostream &out, Videos &Video)
 			out << std::left << std::setw(TEXT_WIDTH) << "  Price" << " : $" << std::fixed << Video.getPrice() << std::endl;
 		}
 
-		//display director if set
-		if (Video.getDirector() == DEF_DIRECTOR);
+		//display director_ if set
+		if (Video.getdirector() == DEF_director_);
 		else
 		{
-			out << std::left << std::setw(TEXT_WIDTH) << "  Director" << " : " << Video.getDirector() << std::endl;
+			out << std::left << std::setw(TEXT_WIDTH) << "  director_" << " : " << Video.getdirector() << std::endl;
 		}
 
-		//display runtime if set
-		if (Video.getRunTime() == DEF_RUNTIME);
+		//display runTime_ if set
+		if (Video.getrunTime() == DEF_runTime_);
 		else
 		{
-			out << std::left << std::setw(TEXT_WIDTH) << "  RunTime" << " : " << Video.getRunTime();
+			out << std::left << std::setw(TEXT_WIDTH) << "  runTime_" << " : " << Video.getrunTime();
 		}
 
 		//display sequel if set

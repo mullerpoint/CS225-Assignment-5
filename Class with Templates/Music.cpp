@@ -28,9 +28,9 @@
 #define DEF_PRICE 0.00
 #define DEF_PUB 1970
 #define ELEMENT_ZERO 0
-#define DEF_PRODUCER ""
+#define DEF_Producer_ ""
 #define DEF_MIN 0.0
-#define DEF_GENRE Music::Genre::UDEF
+#define DEF_GENRE Music::GENRE::UDEF
 #define TEXT_WIDTH 20
 
 //Function prototype for insertion operator
@@ -39,9 +39,9 @@ std::ostream& operator<<(std::ostream &out, Music &music);
 Music::Music() : MediaItems()
 {
 
-	Music::setExecutive(DEF_PRODUCER);
-	Music::setRunTime(DEF_MIN);
-	Music::setGenre(DEF_GENRE);
+	Music::setExecutive(DEF_Producer_);
+	Music::setrunTime(DEF_MIN);
+	Music::setGENRE(DEF_GENRE);
 
 	Music::modified(false);
 }
@@ -52,111 +52,111 @@ Music::~Music()
 	active--;
 }
 
-//Set video Director
-int Music::setExecutive(std::string new_producer)
+//Set video director_
+int Music::setExecutive(std::string new_Producer_)
 {
-	Music::Producer = new_producer;
+	Music::Producer_ = new_Producer_;
 	Music::modified(true);
 	return 0;
 }
 
 //set time of music
-int Music::setRunTime(double new_Minutes)
+int Music::setrunTime(double new_minutes_)
 {
-	if (new_Minutes >= 0)
+	if (new_minutes_ >= 0)
 	{
-		Music::minutes = new_Minutes;
+		Music::minutes_ = new_minutes_;
 		Music::modified(true);
 		return 0;
 	}
 	else
 	{
-		std::cout << "Please enter a positive value for minutes";
+		std::cout << "Please enter a positive value for minutes_";
 		return -1;
 	}
 }
 
-//set genre
-int Music::setGenre(Genre new_genre)
+//set GENRE
+int Music::setGENRE(GENRE new_GENRE)
 {
-	Music::musicGenre = new_genre;
+	Music::musicGENRE_ = new_GENRE;
 	Music::modified(true);
 	return 0;
 }
 
-//get the producer name
+//get the Producer_ name_
 const std::string Music::getProducer()
 {
-	return Producer;
+	return Producer_;
 }
 
 //get the music time
-const double Music::getRunTime()
+const double Music::getrunTime()
 {
-	return minutes;
+	return minutes_;
 }
 
-//get music genre
-const Music::Genre Music::getGenre()
+//get music GENRE
+const Music::GENRE Music::getGENRE()
 {
-	return musicGenre;
+	return musicGENRE_;
 }
 
-std::string Music::dispGenre(Music::Genre type)
+std::string Music::dispGENRE(Music::GENRE type)
 {
 	switch (type)
 	{
-	case Music::Genre::UDEF:
+	case Music::GENRE::UDEF:
 		return "Undefinded";
 		break;
-	case Music::Genre::ROC:
+	case Music::GENRE::ROC:
 		return "Rock";
 		break;
-	case Music::Genre::COU:
+	case Music::GENRE::COU:
 		return "Country";
 		break;
-	case Music::Genre::HIP:
+	case Music::GENRE::HIP:
 		return "HipHop";
 		break;
-	case Music::Genre::TEC:
+	case Music::GENRE::TEC:
 		return "Techno";
 		break;
-	case Music::Genre::REG:
+	case Music::GENRE::REG:
 		return  "Reggie";
 		break;
-	case Music::Genre::OTHER:
+	case Music::GENRE::OTHER:
 		return "Other";
 		break;
 	default:
-		return "Error : Unrecognized Genre Type";
+		return "Error : Unrecognized GENRE Type";
 		break;
 	}
 }
 
-std::string Music::dispGenreSht(Music::Genre type)
+std::string Music::dispGENRESht(Music::GENRE type)
 {
 	switch (type)
 	{
-	case Music::Genre::ROC:
+	case Music::GENRE::ROC:
 		return "ROC";
 		break;
-	case Music::Genre::COU:
+	case Music::GENRE::COU:
 		return "COU";
 		break;
-	case Music::Genre::HIP:
+	case Music::GENRE::HIP:
 		return "HIP";
 		break;
-	case Music::Genre::TEC:
+	case Music::GENRE::TEC:
 		return "TEC";
 		break;
-	case Music::Genre::REG:
+	case Music::GENRE::REG:
 		return  "REG";
 		break;
-	case Music::Genre::OTHER:
+	case Music::GENRE::OTHER:
 		return "";
 		break;
 	default:
-		return "Error : Unrecognized Genre Type";
+		return "Error : Unrecognized GENRE Type";
 		break;
 	}
 }
@@ -188,7 +188,7 @@ std::ostream& operator<<(std::ostream &out, Music &music)
 	if (music.isEmpty() == true); //if empty print nothing
 	else if (music.isEmpty() == false) //if not empty print data thats available
 	{
-		// display item name if present
+		// display item name_ if present
 		if (music.getName() == DEF_NAME)
 		{
 			out << std::left << std::setw(TEXT_WIDTH) << "Media Item Name" << " : " << "No Name Set" << std::endl;
@@ -219,26 +219,26 @@ std::ostream& operator<<(std::ostream &out, Music &music)
 			out << std::left << std::setw(TEXT_WIDTH) << "  Price" << " : $" << std::fixed << music.getPrice() << std::endl;
 		}
 
-		//display producer if set
-		if (music.getProducer() == DEF_PRODUCER);
+		//display Producer_ if set
+		if (music.getProducer() == DEF_Producer_);
 		else
 		{
-			out << std::left << std::setw(TEXT_WIDTH) << "  Director" << " : " << music.getProducer() << std::endl;
+			out << std::left << std::setw(TEXT_WIDTH) << "  director_" << " : " << music.getProducer() << std::endl;
 		}
 
-		//display minutes
-		if (music.getRunTime() == DEF_MIN);
+		//display minutes_
+		if (music.getrunTime() == DEF_MIN);
 		else
 		{
-			out << std::left << std::setw(TEXT_WIDTH) << "  Minutes" << " : " << music.getRunTime() << std::endl;
+			out << std::left << std::setw(TEXT_WIDTH) << "  minutes_" << " : " << music.getrunTime() << std::endl;
 		}
 
-		//Display genre
+		//Display GENRE
 		//comparing strings to allow comparison, enums refused to compile
-		if (music.dispGenreSht(music.getGenre()) == music.dispGenreSht(Music::Genre::UDEF));
+		if (music.dispGENRESht(music.getGENRE()) == music.dispGENRESht(Music::GENRE::UDEF));
 		else
 		{
-		out << std::left << std::setw(TEXT_WIDTH) << "  Genre" << " : " << music.dispGenre(music.getGenre()) << std::endl;
+		out << std::left << std::setw(TEXT_WIDTH) << "  GENRE" << " : " << music.dispGENRE(music.getGENRE()) << std::endl;
 		}
 
 		//display elements if they exist; 

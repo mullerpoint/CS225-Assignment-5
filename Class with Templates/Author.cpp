@@ -23,7 +23,7 @@
 #define TEXT_WIDTH 20
 
 //Active author objects to start
-int Author::active = 0;
+int Author::active_ = 0;
 
 //Constructor
 Author::Author()
@@ -32,35 +32,35 @@ Author::Author()
 	Author::setDeath(DEF_DEATH);
 	Author::setName(DEF_NAME);
 	Author::modified(false);
-	active++;
+	active_++;
 }
 
 //Display all atributes
 void Author::toCout()
 {
-	if (name == "");
+	if (name_ == "");
 	else if (true)
 	{
-		std::cout << std::left << std::setw(TEXT_WIDTH) << " Author name" << " : " << name << std::endl;
+		std::cout << std::left << std::setw(TEXT_WIDTH) << " Author name" << " : " << name_ << std::endl;
 	}
 
-	if (birthYear == 0);
-	else if (birthYear > 0)
+	if (birthYear_ == 0);
+	else if (birthYear_ > 0)
 	{
-		std::cout << std::left << std::setw(TEXT_WIDTH) << "   Birth Year" << " : " << birthYear << std::endl;
+		std::cout << std::left << std::setw(TEXT_WIDTH) << "   Birth Year" << " : " << birthYear_ << std::endl;
 	}
 
-	if (deathYear == 0);
-	else if (deathYear > 0)
+	if (deathYear_ == 0);
+	else if (deathYear_ > 0)
 	{
-		std::cout << std::left << std::setw(TEXT_WIDTH) << "   Death Year" << " : " << deathYear << std::endl;
+		std::cout << std::left << std::setw(TEXT_WIDTH) << "   Death Year" << " : " << deathYear_ << std::endl;
 	}
 }
 
 //destructor
 Author::~Author()
 {
-	active--;
+	active_--;
 }
 
 //set the birth year
@@ -68,7 +68,7 @@ void Author::setBirth(int new_birth)
 {
 	if (new_birth >= 0)
 	{
-		Author::birthYear = new_birth;
+		Author::birthYear_ = new_birth;
 		Author::modified(true);
 	}
 	else
@@ -82,7 +82,7 @@ void Author::setDeath(int new_death)
 {
 	if (new_death >= 0)
 	{
-		Author::deathYear = new_death;
+		Author::deathYear_ = new_death;
 		Author::modified(true);
 	}
 	else
@@ -94,32 +94,32 @@ void Author::setDeath(int new_death)
 //set the author name
 void Author::setName(std::string new_author)
 {
-	Author::name = new_author;
+	Author::name_ = new_author;
 	Author::modified(true);
 }
 
 //get the Author Name
 const std::string Author::getName()
 {
-	return Author::name;
+	return Author::name_;
 }
 
 //set author as modified/ unmodified
 void Author::modified(bool data)
 {
-	Author::hasData = data;
+	Author::hasData_ = data;
 }
 
 //object empty check
 bool Author::isEmpty()
 {
-	return !hasData;
+	return !hasData_;
 }
 
 //objects in memory
 int Author::in_mem()
 {
-	return active;
+	return active_;
 }
 
 std::ostream& operator<<(std::ostream &out, Author &Auth)

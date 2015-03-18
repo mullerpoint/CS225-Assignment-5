@@ -87,7 +87,7 @@ int Books::setInPrint(bool printStatus)
 //Set Sequel
 int Books::setSequel(Books* new_sequel)
 {
-	Books::sequel_ptr = new_sequel;
+	Books::sequel_ptr_ = new_sequel;
 	Books::modified(true);
 	return 0;
 }
@@ -128,7 +128,7 @@ const bool Books::getInPrintDef()
 //get the sequel pointer
 Books* Books::getSequel()
 {
-	return sequel_ptr;
+	return sequel_ptr_;
 }
 
 //get the isbn number
@@ -158,7 +158,7 @@ std::ostream& operator<<(std::ostream &out, Books &Book)
 	if (Book.isEmpty() == true); //if empty print nothing
 	else if (Book.isEmpty() == false) //if not empty print data thats available
 	{
-		// display item name if present
+		// display item name_ if present
 		if (Book.getName() == DEF_NAME)
 		{
 			out << std::left << std::setw(TEXT_WIDTH) << "Media Item Name" << " : " << "No Name Set" << std::endl;
@@ -189,7 +189,7 @@ std::ostream& operator<<(std::ostream &out, Books &Book)
 			out << std::left << std::setw(TEXT_WIDTH) << "  Price" << " : $" << std::fixed << Book.getPrice() << std::endl;
 		}
 
-		//display director if set
+		//display director_ if set
 		if (Book.getPages() == DEF_PAGES);
 		else
 		{

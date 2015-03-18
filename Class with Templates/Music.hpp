@@ -13,15 +13,15 @@ class Music :
 	public MediaItems
 {
 public:
-	enum Genre {
+	enum GENRE {
 		ROC, COU, HIP, TEC, REG, OTHER, UDEF, END
-	};
+	}; //enum of the music genre
 
 private:
-	std::string Producer;
-	double minutes;
+	std::string Producer_; //name_ of the producer of the music
+	double minutes_; // time in minutes of the music
 
-	Genre musicGenre;
+	GENRE musicGENRE_; //genre enum
 
 public:
 	Music();
@@ -29,15 +29,15 @@ public:
 
 	//mutators
 	virtual int setExecutive(std::string);
-	int setRunTime(double);
-	int setGenre(Genre UDEF);
+	int setrunTime(double);
+	int setGENRE(GENRE UDEF);
 
 	//Accessors
 	const std::string getProducer();
-	const virtual double getRunTime();
-	const Music::Genre getGenre();
-	std::string dispGenre(Music::Genre = Music::Genre::OTHER); // returns a string for outputting the genre 
-	std::string dispGenreSht(Music::Genre = Music::Genre::OTHER); // returns a short string for searching the tokens
+	const virtual double getrunTime();
+	const Music::GENRE getGENRE();
+	std::string dispGENRE(Music::GENRE = Music::GENRE::OTHER); // returns a string for outputting the GENRE 
+	std::string dispGENRESht(Music::GENRE = Music::GENRE::OTHER); // returns a short string for searching the tokens
 	const virtual int toCout();
 
 	//predicate

@@ -8,13 +8,13 @@
 class Elements
 {
 private:
-	int start;
-	int end;
-	std::string name;
+	int start_; //starting location of the element
+	int end_; // ending location of the element
+	std::string name_; //name of the element
 
-	bool hasData;
+	bool hasData_; // variable to keep track of whether an object has been initialized by the user
 
-	static int active;
+	static int active_; // number of elements active
 
 public:
 	Elements();

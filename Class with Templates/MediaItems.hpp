@@ -16,20 +16,20 @@ class MediaItems
 {
 private:
 
-	bool hasData;
+	bool hasData; // variable to keep track of whether an object has been initialized by the user
 
 protected:
-	std::string name;
-	int pub_year;
-	bool pub_year_def;
-	Author* auth_ptr;
+	std::string name_; //name_ of the media item
+	int pub_year_; // publication year of the media item
+	bool pub_year_def_; // if the publicaiton year is default
+	Author* auth_ptr_; // pointer to the author of the mediaitem object
 
-	double price;
+	double price; // price of the media item
 
-	Elements element[DEF_ELEMENTS];
-	int element_num;
+	Elements element_[DEF_ELEMENTS]; // any elements that are containend within the media item
+	int element_num_;// the element number being worked on
 
-	static int active;
+	static int active_; // number of media items active
 
 public:
 	MediaItems();

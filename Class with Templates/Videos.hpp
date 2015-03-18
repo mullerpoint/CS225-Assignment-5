@@ -10,10 +10,10 @@ class Videos :
 	public MediaItems
 {
 private:
-	std::string director;
-	double runTime;
+	std::string director_; //name_ of the director of the video
+	double runTime_; //runtime of the video
 
-	Videos* sequel_ptr;
+	Videos* sequel_ptr_; //pointer to the sequel video item
 
 public:
 	Videos();
@@ -21,12 +21,12 @@ public:
 
 	//mutators
 	virtual int setExecutive(std::string);
-	int setRunTime(double);
+	int setrunTime(double);
 	int setSequel(Videos*);
 
 	//accessors
-	const std::string getDirector();
-	const double getRunTime();
+	const std::string getdirector();
+	const double getrunTime();
 	Videos* getSequel();
 	const int toCout();
 
