@@ -18,6 +18,8 @@
 //#include <unistd.h> // isatty  for linux
 #include <iomanip> // included to make pretty output
 #include <typeinfo>
+#include <list>
+#include <vector>
 #endif
 
 //includes for external dependencies

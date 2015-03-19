@@ -18,6 +18,8 @@
 //#include <unistd.h> // isatty  for linux
 #include <iomanip> // included to make pretty output
 #include <typeinfo>
+#include <list>
+#include <vector>
 #endif
 
 // include header file
@@ -54,7 +56,7 @@ Books::Books() : MediaItems()
 //destructor
 Books::~Books()
 {
-	active--;
+	active_--;
 }
 
 
@@ -140,14 +142,14 @@ const std::string Books::getISBN()
 //return the number of constructed items
 const int Books::in_mem()
 {
-	return active;
+	return active_;
 }
 
 //clear book
 int Books::clear()
 {
 	*this = Books();
-	Books::active = Books::active - 2; //active is increased by two when calling the constructor
+	Books::active_ = Books::active_ - 2; //active is increased by two when calling the constructor
 	return 0;
 }
 

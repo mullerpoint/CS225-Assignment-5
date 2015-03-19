@@ -18,6 +18,8 @@
 //#include <unistd.h> // isatty  for linux
 #include <iomanip> // included to make pretty output
 #include <typeinfo>
+#include <list>
+#include <vector>
 #endif
 
 // include header file
@@ -47,7 +49,7 @@ Videos::Videos() : MediaItems()
 
 Videos::~Videos()
 {
-	active--;
+	active_--;
 }
 
 //Set video director_
@@ -109,13 +111,13 @@ const int Videos::toCout()
 //return the number of constructed items
 const int Videos::in_mem()
 {
-	return active;
+	return active_;
 }
 
 int Videos::clear()
 {
 	(*this) = Videos();
-	Videos::active = Videos::active - 1;
+	Videos::active_ = Videos::active_ - 1;
 	return 0;
 }
 

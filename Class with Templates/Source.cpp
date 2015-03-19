@@ -16,6 +16,8 @@
 //#include <unistd.h> // isatty  for linux
 #include <iomanip> // included to make pretty output
 #include <typeinfo> //included to use typeid()
+#include <list>
+#include <vector>
 #endif
 
 //User Defined Class Includes
@@ -28,9 +30,6 @@
 
 
 //Gloabal Variables and Defines
-#define OBJS_MI 80 //number of Media Items
-#define PER_GROUP 20
-#define OBJS_AUTH 8 //number of Authors
 #define TEXT_WIDTH 20
 bool done = false;
 
@@ -39,13 +38,15 @@ int interactive = _isatty(_fileno(stdin)); //windowns statement
 //int interactive = isatty(STDIN_FILENO); //unix statement
 
 //define global pointers for media item objects
-MediaItems* mixed_array[OBJS_MI];
+std::vector<MediaItems *>items;
 int ItemNum = 0;
+int totalItems = 0;
 //
 
 //define global pointers for author objects
-Author* Auth_ptr;
-int* AuthNum_ptr;
+std::vector<Author *>Authors;
+int AuthNum = 0;
+int totalAuths = 0;
 //
 
 //define global locale pointer for the locale imbue functionality
@@ -68,18 +69,6 @@ void print_MediaItems();
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main()
 {
-	//Create an array, of size OBJS_AUTH of author items for filling with data
-	//useing the global pointer we can use the item specified with 
-	int AuthNum = 0;
-	AuthNum_ptr = &AuthNum;
-	Author Authors[OBJS_AUTH];
-	Auth_ptr = &Authors[*AuthNum_ptr];
-
-	//create array of items
-	init_mixed_array();
-
-	mixed_array[ItemNum];
-
 
 	//use the imbue functionality to make the output look pretty
 	std::locale mylocal("");
@@ -141,77 +130,62 @@ void process_menu_in(char inchar)
 		//Print out all author objects
 		std::cout << std::endl << std::endl << "==== All Authors Start ====" << std::endl;
 		int count = 0;
-		while (count <= (OBJS_AUTH - 1))
+		while (count <= (totalAuths - 1))
 		{
-			if (Auth_ptr[count].isEmpty());
+			if ((*Authors[count]).isEmpty());
 			//isempty() returns the hasData value which is false for an object with no data and true for an object with data, hence the ! to invert the return value
 			else
 			{
 				std::cout << std::endl << "Author [" << count << "] :" << std::endl;
-				Auth_ptr[count].toCout();
+				(*Authors[count]).toCout();
 			}
 			count++;
 		}
 
-		std::cout << std::endl << std::endl << std::left << std::setw(TEXT_WIDTH) << "  Authors in Memory" << " : " << Auth_ptr[0].in_mem() << std::endl
-			<< std::left << std::setw(TEXT_WIDTH) << "    Memory Used" << " : " << sizeof(Author)*Auth_ptr[0].in_mem() << " Bytes";
+		std::cout << std::endl << std::endl << std::left << std::setw(TEXT_WIDTH) << "  Authors in Memory" << " : " << (*Authors[0]).in_mem() << std::endl
+			<< std::left << std::setw(TEXT_WIDTH) << "    Memory Used" << " : " << sizeof(Author)*(*Authors[0]).in_mem() << " Bytes";
 
 		std::cout << std::endl << "===== All Authors End =====" << std::endl;
 
 		//Print out all Media Item Objects
 		std::cout << std::endl << std::endl << "===== All Items Start =====" << std::endl;
 		count = 0;
-		while (count <= (OBJS_MI - 1))
+		while (count <= (totalItems - 1))
 		{
-			if ((*mixed_array[count]).isEmpty());
+			if ((*items[count]).isEmpty());
 			else //if (mixed_array[count].isEmpty() == true)
 			{
 				std::cout << std::endl << "Item [" << count << "]" << std::endl;
-				(*mixed_array[count]).toCout();
+				(*items[count]).toCout();
 			}
 			count++;
 		}
 
-		std::cout << std::endl << std::endl << std::left << std::setw(TEXT_WIDTH) << "  Items in Memory" << " : " << (*mixed_array[0]).in_mem() << std::endl
-			<< std::left << std::setw(TEXT_WIDTH) << "    Memory Used" << " : " << sizeof(MediaItems)*(*mixed_array[0]).in_mem() << " Bytes";
+		std::cout << std::endl << std::endl << std::left << std::setw(TEXT_WIDTH) << "  Items in Memory" << " : " << (*items[0]).in_mem() << std::endl
+			<< std::left << std::setw(TEXT_WIDTH) << "    Memory Used" << " : " << sizeof(MediaItems)*(*items[0]).in_mem() << " Bytes";
 
 		std::cout << std::endl << "====== All Items End ======" << std::endl;
 
-		std::cout << std::endl << std::left << std::setw(TEXT_WIDTH) << "  Total Memory Used" << " : " << (sizeof(MediaItems)*(*mixed_array[0]).in_mem()) + (sizeof(Author)*Auth_ptr[0].in_mem()) << " Bytes";
+		std::cout << std::endl << std::left << std::setw(TEXT_WIDTH) << "  Total Memory Used" << " : " << (sizeof(MediaItems)*(*items[0]).in_mem()) + (sizeof(Author)*(*Authors[0]).in_mem()) << " Bytes";
 	}
 	break;
 
 	//increase item number by 1
 	case '+':
 	{
-		if (ItemNum < (OBJS_MI - 1))
-		{
-			ItemNum = ItemNum + 1;
-		}
-		else if (ItemNum >= (OBJS_MI - 1))
-		{
-			ItemNum = (OBJS_MI - 1);
-		}
-		std::cout << std::endl;
+		//TODO: function that asks for item type and create the item
 	}
 	break;
 
 	//decrease item number by 1
 	case '-':
 	{
-		if (ItemNum > 0)
-		{
-			ItemNum = ItemNum - 1;
-		}
-		else if (ItemNum <= 0)
-		{
-			ItemNum = 0;
-		}
-		std::cout << std::endl;
+		//TODO: function that deletes the current item
+		std::cout << std::endl ;
 	}
 	break;
 
-	// set a custom item number between 0-OBJS_MI
+	// set a custom item number between 0-totalItems
 	case '#':
 	{
 		//declare temp vaiable and read in user value
@@ -220,12 +194,12 @@ void process_menu_in(char inchar)
 		std::cin >> new_itemNum;
 
 		//validate input
-		if ((new_itemNum >= 0) && (new_itemNum <= (OBJS_MI - 1)))
+		if ((new_itemNum >= 0) && (new_itemNum <= (totalItems - 1)))
 		{
 			ItemNum = new_itemNum;
 		}
 		else{
-			std::cout << "Please enter a valid number beteen 0-" << OBJS_MI;
+			std::cout << "Please enter a valid number beteen 0-" << totalItems;
 		}
 
 		//clear buffer for next input
@@ -237,7 +211,7 @@ void process_menu_in(char inchar)
 	// clear item menu option
 	case '0':
 	{
-		(*(mixed_array[ItemNum])).clear();
+		(*items[ItemNum]).clear();
 		std::cout << "Item " << ItemNum << " Cleared" << std::endl;
 	}
 	break;
@@ -245,19 +219,19 @@ void process_menu_in(char inchar)
 	//set media item duration or time
 	case 'B':
 	{
-		if (!(typeid(*mixed_array[ItemNum]) == typeid(Books) || typeid(*mixed_array[ItemNum]) == typeid(MediaItems)))
+		if (!(typeid(items[ItemNum]) == typeid(Books) || typeid(items[ItemNum]) == typeid(MediaItems)))
 		{
 			double runTime;
 			std::cout << "Please enter the run time : ";
 			std::cin >> runTime;
-			if (typeid(*mixed_array[ItemNum]) == typeid(Music))
+			if (typeid(items[ItemNum]) == typeid(Music))
 			{
-				Music* music_ptr = (Music*)mixed_array[ItemNum];
+				Music* music_ptr = (Music*)items[ItemNum];
 				(*music_ptr).setrunTime(runTime);
 			}
 			else
 			{
-				Videos* video_ptr = (Videos*)mixed_array[ItemNum];
+				Videos* video_ptr = (Videos*)(items[ItemNum]);
 				(*video_ptr).setrunTime(runTime);
 			}
 
@@ -273,33 +247,33 @@ void process_menu_in(char inchar)
 	case 'C':
 	{
 		int born, died;
-		std::string name_;
+		std::string name;
 
 		if (interactive)
 		{
-			std::cout << "Please enter the Authors name_ :";
-			std::getline(std::cin, name_);
-			Auth_ptr[*AuthNum_ptr].setName(name_);
+			std::cout << "Please enter the Authors name :";
+			std::getline(std::cin, name);
+			(*Authors[AuthNum]).setName(name);
 
 
 			std::cout << "Please enter the Authors birth year (yyyy), Zero(0) for none :";
 			std::cin >> born;
-			Auth_ptr[*AuthNum_ptr].setBirth(born);
+			(*Authors[AuthNum]).setBirth(born);
 			std::cin.ignore(10000, '\n');
 
 			std::cout << "Please enter the Authors death year (yyyy), Zero(0) for none :";
 			std::cin >> died;
-			Auth_ptr[*AuthNum_ptr].setDeath(died);
+			(*Authors[AuthNum]).setDeath(died);
 			std::cin.ignore(10000, '\n');
 
-			*AuthNum_ptr = *AuthNum_ptr + 1;
+			AuthNum = AuthNum + 1;
 		}
 		else //scripted
 		{
-			std::cin >> Auth_ptr[*AuthNum_ptr];
+			std::cin >> (*Authors[AuthNum]);
 			//std::cin.ignore(256, '\n');
 
-			*AuthNum_ptr = *AuthNum_ptr + 1;
+			AuthNum = AuthNum + 1;
 		}
 	}
 	break;
@@ -308,7 +282,7 @@ void process_menu_in(char inchar)
 	case 'D':
 	{
 		std::cout << std::endl << "Item [" << ItemNum << "] :" << std::endl;
-		(*mixed_array[ItemNum]).toCout();
+		(*items[ItemNum]).toCout();
 	}
 	break;
 
@@ -316,12 +290,12 @@ void process_menu_in(char inchar)
 	case 'E':
 	{
 		int num, start, end;
-		std::string name_;
+		std::string name;
 
 		if (interactive)
 		{
 			std::cout << "Please enter the Element name_ : ";
-			std::getline(std::cin, name_);
+			std::getline(std::cin, name);
 
 			std::cout << "Please enter the Element start, Zero(0) for none : ";
 			std::cin >> start;
@@ -340,12 +314,12 @@ void process_menu_in(char inchar)
 			std::cin >> end;
 			std::cin.ignore(1, '\n');
 
-			std::getline(std::cin, name_);
-			Auth_ptr[*AuthNum_ptr].setName(name_);
+			std::getline(std::cin, name);
+			(*Authors[AuthNum]).setName(name);
 		}
 
 
-		(*mixed_array[ItemNum]).setElement(start, end, name_, num = 0);
+		(*items[ItemNum]).setElement(start, end, name, num = 0);
 
 	}
 	break;
@@ -353,24 +327,24 @@ void process_menu_in(char inchar)
 	//set music/video Producer/director respectivly
 	case 'F':
 	{
-		if (!(typeid(*mixed_array[ItemNum]) == typeid(Books) || typeid(*mixed_array[ItemNum]) == typeid(MediaItems)))
+		if (!(typeid(*items[ItemNum]) == typeid(Books) || typeid(*items[ItemNum]) == typeid(MediaItems)))
 		{
 			std::string executive;
 			std::cout << "Please enter the Producer or director : ";
 			std::getline(std::cin, executive);
 
 
-			if (typeid(*mixed_array[ItemNum]) == typeid(Music))
+			if (typeid(*items[ItemNum]) == typeid(Music))
 			{
 				//create a simple variable that points to cast version of the object
-				Music* music_ptr = (Music*)mixed_array[ItemNum];
+				Music* music_ptr = (Music*)items[ItemNum];
 				//set the Producer
 				(*music_ptr).setExecutive(executive);
 			}
 			else
 			{
 				//create a simple variable that points to cast version of the object
-				Videos* video_ptr = (Videos*)mixed_array[ItemNum];
+				Videos* video_ptr = (Videos*)items[ItemNum];
 				//set the director
 				(*video_ptr).setExecutive(executive);
 			}
@@ -385,10 +359,10 @@ void process_menu_in(char inchar)
 	// set the item in print status
 	case 'I':
 	{
-		if (typeid(*mixed_array[ItemNum]) == typeid(Books))
+		if (typeid(*items[ItemNum]) == typeid(Books))
 		{
 			//create a simple variable that points to cast version of the object
-			Books* book_ptr = (Books*)mixed_array[ItemNum];
+			Books* book_ptr = (Books*)items[ItemNum];
 
 			bool printStatus;
 			std::cout << "Is the book still in print (0/1) : ";
@@ -402,10 +376,10 @@ void process_menu_in(char inchar)
 	//set Book ISBN
 	case 'J':
 	{
-		if (typeid(*mixed_array[ItemNum]) == typeid(Books))
+		if (typeid(*items[ItemNum]) == typeid(Books))
 		{
 			//create a simple variable that points to cast version of the object
-			Books* book_ptr = (Books*)mixed_array[ItemNum];
+			Books* book_ptr = (Books*)items[ItemNum];
 
 			std::string isbn;
 			std::cout << "Please enter the Book ISBN :";
@@ -422,10 +396,10 @@ void process_menu_in(char inchar)
 	//set Music GENRE
 	case 'K':
 	{
-		if (typeid(*mixed_array[ItemNum]) == typeid(Music))
+		if (typeid(*items[ItemNum]) == typeid(Music))
 		{
 			//create a simple variable that points to cast version of the object
-			Music* music_ptr = (Music*)mixed_array[ItemNum];
+			Music* music_ptr = (Music*)items[ItemNum];
 
 			//get the GENRE string from input
 			std::string GenreStr;
@@ -470,12 +444,12 @@ void process_menu_in(char inchar)
 		Music* firstMusicObj = NULL;
 
 		//determine if their are any music objects and save the location of the first one 
-		while ((count < OBJS_MI) && (found == false))
+		while ((count < totalItems) && (found == false))
 		{
-			if (typeid(*(mixed_array[count])) == typeid(Music))
+			if (typeid(*(items[count])) == typeid(Music))
 			{
 				found = true;
-				firstMusicObj = (Music*)mixed_array[count];
+				firstMusicObj = (Music*)items[count];
 			}
 			count++;
 		}
@@ -494,18 +468,18 @@ void process_menu_in(char inchar)
 				std::cout << std::endl << "===== GENRE : " << (*firstMusicObj).dispGENRE(type) << " =====" << std::endl;
 				count = 0;
 				numPrinted = 0;
-				while (count < OBJS_MI)
+				while (count < totalItems)
 				{
-					if (typeid(*mixed_array[count]) == typeid(Music))
+					if (typeid(*items[count]) == typeid(Music))
 					{
-						Music* music_ptr = (Music*)mixed_array[count];
+						Music* music_ptr = (Music*)items[count];
 						if ((*music_ptr).dispGENRESht((*music_ptr).getGENRE()) == (*music_ptr).dispGENRESht(type))
 						//comparing strings to allow comparison, enums refused to compile
 						{
 							if (!((*music_ptr).isEmpty()))
 							{
 								std::cout << std::endl << "Item [" << count << "]" << std::endl;
-								(*mixed_array[count]).toCout();
+								(*items[count]).toCout();
 								numPrinted++;
 							} //if isEmpty
 						} //if GENRE
@@ -537,16 +511,16 @@ void process_menu_in(char inchar)
 		std::string new_name_;
 		std::cout << "Enter Media Item Title : ";
 		std::getline(std::cin, new_name_);
-		(*mixed_array[ItemNum]).setName(new_name_);
+		(*items[ItemNum]).setName(new_name_);
 	}
 	break;
 
 	// enter item page count menu option
 	case 'P':
 	{
-		if (typeid((*mixed_array[ItemNum])) == typeid(Books))
+		if (typeid((*items[ItemNum])) == typeid(Books))
 		{
-			Books* book_ptr = (Books*)mixed_array[ItemNum];
+			Books* book_ptr = (Books*)items[ItemNum];
 
 			int new_pages;
 			std::cout << "Enter Media Item Pages : ";
@@ -566,14 +540,14 @@ void process_menu_in(char inchar)
 	case 'R':
 	{
 		std::cout
-			<< std::left << std::setw(28) << "Memory Used for Authors" << " : " << sizeof(Author)*Auth_ptr[0].in_mem() << " Bytes"
-			<< std::endl << std::left << std::setw(28) << "Memory Used for Media Items" << " : " << sizeof(MediaItems)*(*mixed_array[60]).in_mem() << " Bytes"
-			<< std::endl << std::left << std::setw(28) << "Memory Used for Book Items" << " : " << sizeof(Books)*(*mixed_array[0]).in_mem() << " Bytes"
-			<< std::endl << std::left << std::setw(28) << "Memory Used for Music Items" << " : " << sizeof(Music)*(*mixed_array[20]).in_mem() << " Bytes"
-			<< std::endl << std::left << std::setw(28) << "Memory Used for Video Items" << " : " << sizeof(Videos)*(*mixed_array[40]).in_mem() << " Bytes"
+			<< std::left << std::setw(28) << "Memory Used for Authors" << " : " << sizeof(Author)*(*Authors[0]).in_mem() << " Bytes"
+			<< std::endl << std::left << std::setw(28) << "Memory Used for Media Items" << " : " << sizeof(MediaItems)*(*items[60]).in_mem() << " Bytes"
+			<< std::endl << std::left << std::setw(28) << "Memory Used for Book Items" << " : " << sizeof(Books)*(*items[0]).in_mem() << " Bytes"
+			<< std::endl << std::left << std::setw(28) << "Memory Used for Music Items" << " : " << sizeof(Music)*(*items[20]).in_mem() << " Bytes"
+			<< std::endl << std::left << std::setw(28) << "Memory Used for Video Items" << " : " << sizeof(Videos)*(*items[40]).in_mem() << " Bytes"
 			<< std::endl << std::left << std::setw(28) << "  Total Memory Used" << " : " <<
-			(sizeof(MediaItems)*(*mixed_array[60]).in_mem()) + (sizeof(Author)*Auth_ptr[0].in_mem() +
-			sizeof(Books)*(*mixed_array[0]).in_mem() + sizeof(Music)*(*mixed_array[20]).in_mem() + sizeof(Videos)*(*mixed_array[40]).in_mem()) << " Bytes";
+			(sizeof(MediaItems)*(*items[60]).in_mem()) + (sizeof(Author)*(*Authors[0]).in_mem() +
+			sizeof(Books)*(*items[0]).in_mem() + sizeof(Music)*(*items[20]).in_mem() + sizeof(Videos)*(*items[40]).in_mem()) << " Bytes";
 
 	}
 	break;
@@ -586,17 +560,17 @@ void process_menu_in(char inchar)
 		std::cin >> temp_num;
 		std::cin.ignore(1, '\n');
 
-		if (typeid(*mixed_array[ItemNum]) == typeid(Books))
+		if (typeid(*items[ItemNum]) == typeid(Books))
 		{
-			Books* book_ptr = (Books*)mixed_array[ItemNum];
-			Books* sql_ptr = (Books*)mixed_array[temp_num];
+			Books* book_ptr = (Books*)items[ItemNum];
+			Books* sql_ptr = (Books*)items[temp_num];
 
 			(*book_ptr).setSequel(sql_ptr);
 		}
 		else
 		{
-			Videos* video_ptr = (Videos*)mixed_array[ItemNum];
-			Videos* sql_ptr = (Videos*)mixed_array[temp_num];
+			Videos* video_ptr = (Videos*)items[ItemNum];
+			Videos* sql_ptr = (Videos*)items[temp_num];
 
 			(*video_ptr).setSequel(sql_ptr);
 		}
@@ -611,7 +585,7 @@ void process_menu_in(char inchar)
 		std::cout << "Enter Author index number : ";
 		std::cin >> temp_num;
 		std::cin.ignore(1, '\n');
-		(*mixed_array[ItemNum]).setAuthor(&Auth_ptr[temp_num]);
+		(*items[ItemNum]).setAuthor(Authors[temp_num]);
 	}
 	break;
 
@@ -624,7 +598,7 @@ void process_menu_in(char inchar)
 		std::cout << "Enter Media Item value : ";
 		std::cin >> new_price;
 		std::cin.ignore(10000, '\n');
-		(*mixed_array[ItemNum]).setPrice(new_price);
+		(*items[ItemNum]).setPrice(new_price);
 	}
 	break;
 
@@ -635,7 +609,7 @@ void process_menu_in(char inchar)
 		std::cout << "Enter Media Item publication year : ";
 		std::cin >> new_year;
 		std::cin.ignore(10000, '\n');
-		(*mixed_array[ItemNum]).setPubYear(new_year);
+		(*items[ItemNum]).setPubYear(new_year);
 	}
 	break;
 
@@ -676,36 +650,4 @@ void print_menu()
 		<< "I - Set Media Item In Print Status(0 / 1)" << std::endl
 		<< "V - Set Media Item Value" << std::endl
 		<< "Y - Set Media Item Year Produced" << std::endl << std::endl;
-}
-
-int init_mixed_array()
-{
-	for (int i = 0; i < OBJS_MI; i++)
-	{
-		int type = (i / (PER_GROUP));
-		//-------
-		switch (type)
-		{
-		case 0:
-			mixed_array[i] = new Books();
-			break;
-
-		case 1:
-			mixed_array[i] = new Music();
-			break;
-
-		case 2:
-			mixed_array[i] = new Videos();
-			break;
-
-		case 3:
-			mixed_array[i] = new MediaItems();
-			break;
-
-		default:
-			std::cout << "ERROR : in array initialize" << std::endl;
-			return -1;
-		}
-	}
-	return 0;
 }

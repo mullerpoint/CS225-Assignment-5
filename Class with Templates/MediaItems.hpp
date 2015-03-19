@@ -26,7 +26,7 @@ protected:
 
 	double price; // price of the media item
 
-	Elements element_[DEF_ELEMENTS]; // any elements that are containend within the media item
+	std::list<Elements>element_; // any elements that are containend within the media item
 	int element_num_;// the element number being worked on
 
 	static int active_; // number of media items active
