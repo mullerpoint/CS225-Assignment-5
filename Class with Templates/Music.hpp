@@ -12,6 +12,8 @@
 class Music :
 	public MediaItems
 {
+	//need to declare the Genre enum as public so it can be used in comparisons in other functions
+	//Genre is declared first so that the atribute musicGENRE will be allowed
 public:
 	enum GENRE {
 		ROC, COU, HIP, TEC, REG, OTHER, UDEF, END
@@ -24,10 +26,11 @@ private:
 	GENRE musicGENRE_; //genre enum
 
 public:
+	//Constructor Destructor
 	Music();
 	~Music();
 
-	//mutators
+	//Mutators
 	virtual int setExecutive(std::string);
 	int setrunTime(double);
 	int setGENRE(GENRE UDEF);
@@ -36,14 +39,13 @@ public:
 	const std::string getProducer();
 	const virtual double getrunTime();
 	const Music::GENRE getGENRE();
-	std::string dispGENRE(Music::GENRE = Music::GENRE::OTHER); // returns a string for outputting the GENRE 
-	std::string dispGENRESht(Music::GENRE = Music::GENRE::OTHER); // returns a short string for searching the tokens
 	const virtual int toCout();
 
 	//predicate
 	const int in_mem();
 	int clear();
-
+	std::string dispGENRE(Music::GENRE = Music::GENRE::OTHER);
+	std::string dispGENRESht(Music::GENRE = Music::GENRE::OTHER);
 };
 
 #endif

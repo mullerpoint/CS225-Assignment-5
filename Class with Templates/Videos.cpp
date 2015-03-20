@@ -17,9 +17,9 @@
 #include <io.h> // isatty for windows
 //#include <unistd.h> // isatty  for linux
 #include <iomanip> // included to make pretty output
-#include <typeinfo>
-#include <list>
-#include <vector>
+#include <typeinfo> //included to use typeid()
+#include <list> //included for use of list template
+#include <vector> //included for use of vector template
 #endif
 
 // include header file
@@ -37,6 +37,7 @@
 //Function prototype for insertion operator
 std::ostream& operator<<(std::ostream &out, Videos &Video);
 
+//constructor
 Videos::Videos() : MediaItems()
 {
 	Videos::setExecutive(DEF_director_);
@@ -46,13 +47,17 @@ Videos::Videos() : MediaItems()
 	Videos::modified(false);
 }
 
-
+//destructor
 Videos::~Videos()
 {
 	active_--;
 }
 
-//Set video director_
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Mutators
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Set video director
 int Videos::setExecutive(std::string new_director_)
 {
 	Videos::director_ = new_director_;
@@ -84,6 +89,10 @@ int Videos::setSequel(Videos* new_sequel)
 	return 0;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Accessors
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //get director_
 const std::string Videos::getdirector()
 {
@@ -108,6 +117,10 @@ const int Videos::toCout()
 	return 0;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Predicate Functions
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //return the number of constructed items
 const int Videos::in_mem()
 {
@@ -121,6 +134,9 @@ int Videos::clear()
 	return 0;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Overloads
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 std::ostream& operator<<(std::ostream &out, Videos &Video)
 {
 
@@ -180,19 +196,26 @@ std::ostream& operator<<(std::ostream &out, Videos &Video)
 			out << std::left << std::setw(TEXT_WIDTH) << "  Sequel" << " : " << (*(Video.getSequel())).getName();
 		}
 
-		//display elements if they exist; 
-		if ((*Video.getElements(0)).isEmpty() == true);
-		else if ((*Video.getElements(0)).isEmpty() == false)
+		//open an arbitrary scope for displaying the elements in the item
 		{
-			int count = 0;
-			while ((*Video.getElements(count)).isEmpty() == false)
+			//copy the list to allow full access and protect the real list from accedental/intentional modification
+			std::list<Elements>local_list = Video.getElement();
+
+			//display elements if they exist; 
+			if (local_list.empty() == true); // check if the list is empty
+			else //if ((local_list.empty() == false)
 			{
-				out << (*Video.getElements(count));
-				count++;
-			}
-		}
-	}
+				//for loop creates an element list iterator 'it', and assigns the first element to that iterator, cycling throught all the elements in turn
+				//until 'it' equals the end element
+				for (std::list<Elements>::iterator it = local_list.begin(); it != local_list.end(); ++it)
+				{
+					out << *it;
+				}//for
+
+			}//else
+		}//close scope
+	}//else if
 	return out;
-}
+}//close overload
 
 #endif

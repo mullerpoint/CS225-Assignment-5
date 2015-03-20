@@ -17,9 +17,9 @@
 #include <io.h> // isatty for windows
 //#include <unistd.h> // isatty  for linux
 #include <iomanip> // included to make pretty output
-#include <typeinfo>
-#include <list>
-#include <vector>
+#include <typeinfo> //included to use typeid()
+#include <list> //included for use of list template
+#include <vector> //included for use of vector template
 #endif
 
 // include header file
@@ -59,6 +59,9 @@ Books::~Books()
 	active_--;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Mutators
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //set book page count - validate that the book doesnt have a negative page count
 int Books::setPages(int new_pages)
@@ -102,12 +105,9 @@ int Books::setISBN(std::string new_isbn)
 	return 0;
 }
 
-//call overloaded print out function
-const int Books::toCout()
-{
-	std::cout << (*this);
-	return 0;
-}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Accessors
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //get page count
 const int Books::getPages()
@@ -139,6 +139,17 @@ const std::string Books::getISBN()
 	return isbn;
 }
 
+//call overloaded print out function
+const int Books::toCout()
+{
+	std::cout << (*this);
+	return 0;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Predicate Functions
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //return the number of constructed items
 const int Books::in_mem()
 {
@@ -152,6 +163,11 @@ int Books::clear()
 	Books::active_ = Books::active_ - 2; //active is increased by two when calling the constructor
 	return 0;
 }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Overloads
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 std::ostream& operator<<(std::ostream &out, Books &Book)
 {
@@ -226,20 +242,27 @@ std::ostream& operator<<(std::ostream &out, Books &Book)
 			out << std::left << std::setw(TEXT_WIDTH) << "  Sequel" << " : " << (*(Book.getSequel())).getName() << std::endl;
 		}
 
-		//display elements if they exist; 
-		if ((*Book.getElements(0)).isEmpty() == true);
-		else if ((*Book.getElements(0)).isEmpty() == false)
+		//open an arbitrary scope for displaying the elements in the item
 		{
-			int count = 0;
-			while ((*Book.getElements(count)).isEmpty() == false)
+			//copy the list to allow full access and protect the real list from accedental/intentional modification
+			std::list<Elements>local_list = Book.getElement();
+
+			//display elements if they exist; 
+			if (local_list.empty() == true); // check if the list is empty
+			else //if ((local_list.empty() == false)
 			{
-				out << (*Book.getElements(count));
-				count++;
-			}
-		}
-	}
+				//for loop creates an element list iterator 'it', and assigns the first element to that iterator, cycling throught all the elements in turn
+				//until 'it' equals the end element
+				for (std::list<Elements>::iterator it = local_list.begin(); it != local_list.end(); ++it)
+				{
+					out << *it;
+				}//for
+
+			}//else
+		}//close scope
+	}//else if
 	return out;
-}
+}//close overload
 
 
 

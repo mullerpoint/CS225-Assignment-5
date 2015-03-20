@@ -18,10 +18,11 @@ private:
 
 
 public:
+	//Constructor Destructor
 	Books();
 	virtual ~Books();
 
-	//mutators
+	//Mutators
 	int setPages(int);
 	int setInPrint(bool);
 	int setSequel(Books*);

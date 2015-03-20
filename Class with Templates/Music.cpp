@@ -17,9 +17,9 @@
 #include <io.h> // isatty for windows
 //#include <unistd.h> // isatty  for linux
 #include <iomanip> // included to make pretty output
-#include <typeinfo>
-#include <list>
-#include <vector>
+#include <typeinfo> //included to use typeid()
+#include <list> //included for use of list template
+#include <vector> //included for use of vector template
 #endif
 
 // include header file
@@ -38,6 +38,7 @@
 //Function prototype for insertion operator
 std::ostream& operator<<(std::ostream &out, Music &music);
 
+//constructor
 Music::Music() : MediaItems()
 {
 
@@ -48,11 +49,15 @@ Music::Music() : MediaItems()
 	Music::modified(false);
 }
 
-
+//destructor
 Music::~Music()
 {
 	active_--;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Mutators
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Set video director_
 int Music::setExecutive(std::string new_Producer_)
@@ -86,7 +91,11 @@ int Music::setGENRE(GENRE new_GENRE)
 	return 0;
 }
 
-//get the Producer_ name_
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Accessors
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//get the Producer name
 const std::string Music::getProducer()
 {
 	return Producer_;
@@ -104,6 +113,31 @@ const Music::GENRE Music::getGENRE()
 	return musicGENRE_;
 }
 
+const int Music::toCout()
+{
+	std::cout << (*this);
+	return 0;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Predicate Functions
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//return the number of constructed items
+const int Music::in_mem()
+{
+	return active_;
+}
+
+//clear music object
+int Music::clear()
+{
+	(*this) = Music();
+	Music::active_ = Music::active_ - 1;
+	return 0;
+}
+
+// returns a string for outputting the GENRE 
 std::string Music::dispGENRE(Music::GENRE type)
 {
 	switch (type)
@@ -135,6 +169,7 @@ std::string Music::dispGENRE(Music::GENRE type)
 	}
 }
 
+// returns a short string for searching the tokens
 std::string Music::dispGENRESht(Music::GENRE type)
 {
 	switch (type)
@@ -163,25 +198,9 @@ std::string Music::dispGENRESht(Music::GENRE type)
 	}
 }
 
-const int Music::toCout()
-{
-	std::cout << (*this);
-	return 0;
-}
-
-//return the number of constructed items
-const int Music::in_mem()
-{
-	return active_;
-}
-
-//clear music object
-int Music::clear()
-{
-	(*this) = Music();
-	Music::active_ = Music::active_ - 1;
-	return 0;
-}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Overloads
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 std::ostream& operator<<(std::ostream &out, Music &music)
 {
@@ -240,22 +259,29 @@ std::ostream& operator<<(std::ostream &out, Music &music)
 		if (music.dispGENRESht(music.getGENRE()) == music.dispGENRESht(Music::GENRE::UDEF));
 		else
 		{
-		out << std::left << std::setw(TEXT_WIDTH) << "  GENRE" << " : " << music.dispGENRE(music.getGENRE()) << std::endl;
+			out << std::left << std::setw(TEXT_WIDTH) << "  GENRE" << " : " << music.dispGENRE(music.getGENRE()) << std::endl;
 		}
 
-		//display elements if they exist; 
-		if ((*music.getElements(0)).isEmpty() == true);
-		else if ((*music.getElements(0)).isEmpty() == false)
+		//open an arbitrary scope for displaying the elements in the item
 		{
-			int count = 0;
-			while ((*music.getElements(count)).isEmpty() == false)
+			//copy the list to allow full access and protect the real list from accedental/intentional modification
+			std::list<Elements>local_list = music.getElement();
+
+			//display elements if they exist; 
+			if (local_list.empty() == true); // check if the list is empty
+			else //if ((local_list.empty() == false)
 			{
-				out << (*music.getElements(count));
-				count++;
-			}
-		}
-	}
+				//for loop creates an element list iterator 'it', and assigns the first element to that iterator, cycling throught all the elements in turn
+				//until 'it' equals the end element
+				for (std::list<Elements>::iterator it = local_list.begin(); it != local_list.end(); ++it)
+				{
+					out << *it;
+				}//for
+
+			}//else
+		}//close scope
+	}//else if
 	return out;
-}
+}//close overload
 
 #endif

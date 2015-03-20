@@ -26,21 +26,23 @@ protected:
 
 	double price; // price of the media item
 
-	std::list<Elements>element_; // any elements that are containend within the media item
-	int element_num_;// the element number being worked on
+	std::list<Elements>element_; // list of element pointers that are containend within the media item
+	int element_count_;// the element number being worked on
 
 	static int active_; // number of media items active
 
 public:
+	//Constructor Destructor
 	MediaItems();
 	virtual ~MediaItems();
 
-	//mutators
+	//Mutators
 	int setName(std::string);
 	int setPubYear(int);
 	int setPrice(double);
-	int setElement(int, int, std::string, int);
+	int addElement(int, int, std::string, int);
 	int setAuthor(Author*);
+	virtual int modified(bool);
 
 	//Accessors
 	const std::string getName();
@@ -48,12 +50,11 @@ public:
 	const bool getPubYearDef();
 	Author* getAuthor();
 	const double getPrice();
-	Elements* getElements(int = 0);
+	std::list<Elements> getElement();
 	const virtual int toCout();
 
 	//Predicate Functions
 	const virtual bool isEmpty();
-	virtual int modified(bool);
 	const int in_mem();
 	virtual int clear();
 };

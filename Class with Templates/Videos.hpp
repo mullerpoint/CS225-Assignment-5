@@ -16,10 +16,11 @@ private:
 	Videos* sequel_ptr_; //pointer to the sequel video item
 
 public:
+	//Constructor Destructor
 	Videos();
 	virtual ~Videos();
 
-	//mutators
+	//Mutators
 	virtual int setExecutive(std::string);
 	int setrunTime(double);
 	int setSequel(Videos*);

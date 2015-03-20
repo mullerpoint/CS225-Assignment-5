@@ -9,10 +9,21 @@
 #ifndef AUTHOR_CLASS_IMPL_H_
 #define AUTHOR_CLASS_IMPL_H_
 
-//Header Files
-#include <iostream>
-#include <string>
-#include <iomanip>
+//Header files standard libraries and classes
+#ifndef MEDIA_DEPENDENCIES_CORE_H_
+#define MEDIA_DEPENDENCIES_CORE_H_
+#include <iostream> //default include
+#include <string> // included to get strings to work
+#include <locale> // included to get locale info for output
+#include <io.h> // isatty for windows
+//#include <unistd.h> // isatty  for linux
+#include <iomanip> // included to make pretty output
+#include <typeinfo> //included to use typeid()
+#include <list> //included for use of list template
+#include <vector> //included for use of vector template
+#endif
+
+// include header file
 #include "Author.hpp"
 
 
@@ -35,33 +46,15 @@ Author::Author()
 	active_++;
 }
 
-//Display all atributes
-void Author::toCout()
-{
-	if (name_ == "");
-	else if (true)
-	{
-		std::cout << std::left << std::setw(TEXT_WIDTH) << " Author name" << " : " << name_ << std::endl;
-	}
-
-	if (birthYear_ == 0);
-	else if (birthYear_ > 0)
-	{
-		std::cout << std::left << std::setw(TEXT_WIDTH) << "   Birth Year" << " : " << birthYear_ << std::endl;
-	}
-
-	if (deathYear_ == 0);
-	else if (deathYear_ > 0)
-	{
-		std::cout << std::left << std::setw(TEXT_WIDTH) << "   Death Year" << " : " << deathYear_ << std::endl;
-	}
-}
-
 //destructor
 Author::~Author()
 {
 	active_--;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Mutators
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //set the birth year
 void Author::setBirth(int new_birth)
@@ -98,17 +91,25 @@ void Author::setName(std::string new_author)
 	Author::modified(true);
 }
 
+//set author as modified/ unmodified
+void Author::modified(bool data)
+{
+	Author::hasData_ = data;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Accessors
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //get the Author Name
 const std::string Author::getName()
 {
 	return Author::name_;
 }
 
-//set author as modified/ unmodified
-void Author::modified(bool data)
-{
-	Author::hasData_ = data;
-}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Predicate Functions
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //object empty check
 bool Author::isEmpty()
@@ -121,6 +122,32 @@ int Author::in_mem()
 {
 	return active_;
 }
+
+//Display all atributes
+void Author::toCout()
+{
+	if (name_ == "");
+	else if (true)
+	{
+		std::cout << std::left << std::setw(TEXT_WIDTH) << " Author name" << " : " << name_ << std::endl;
+	}
+
+	if (birthYear_ == 0);
+	else if (birthYear_ > 0)
+	{
+		std::cout << std::left << std::setw(TEXT_WIDTH) << "   Birth Year" << " : " << birthYear_ << std::endl;
+	}
+
+	if (deathYear_ == 0);
+	else if (deathYear_ > 0)
+	{
+		std::cout << std::left << std::setw(TEXT_WIDTH) << "   Death Year" << " : " << deathYear_ << std::endl;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Overloads
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 std::ostream& operator<<(std::ostream &out, Author &Auth)
 {
@@ -139,7 +166,7 @@ std::istream& operator>>(std::istream &in, Author &Auth)
 
 	in >> died;
 	Auth.setDeath(died);
-	std::cin.ignore(1, '\n');
+	std::cin.ignore(1, '\n'); 
 
 	std::getline(in, name);
 	Auth.setName(name);

@@ -17,9 +17,9 @@
 #include <io.h> // isatty for windows
 //#include <unistd.h> // isatty  for linux
 #include <iomanip> // included to make pretty output
-#include <typeinfo>
-#include <list>
-#include <vector>
+#include <typeinfo> //included to use typeid()
+#include <list> //included for use of list template
+#include <vector> //included for use of vector template
 #endif
 
 //includes for external dependencies
@@ -36,7 +36,6 @@
 #define DEF_NAME ""
 #define DEF_PRICE 0.00
 #define DEF_PUB 1970
-#define ELEMENT_ZERO 0
 #define TEXT_WIDTH 20
 
 //Function prototype for insertion operator
@@ -48,18 +47,19 @@ int MediaItems::active_ = 0;
 //constructor
 MediaItems::MediaItems()
 {
-	MediaItems::setName(DEF_NAME);
+	MediaItems::setName(DEF_NAME); //set default name of author
 
-	MediaItems::setPrice(DEF_PRICE);
+	MediaItems::setPrice(DEF_PRICE); //set default price of item
 
-	MediaItems::setPubYear(DEF_PUB);
-	pub_year_def_ = true;
+	MediaItems::setPubYear(DEF_PUB); //set default publication year 1970
+	pub_year_def_ = true; // set that the publication year is default
 
-	element_num_ = ELEMENT_ZERO;
+	element_.clear(); // make the list of elements clear
+	element_count_ = 0; // set the element count to zero(0)
 
-	setAuthor(NULL);
+	setAuthor(NULL); //set the author to a null pointer
 
-	hasData = false;
+	hasData = false; //set the item hasdata flag to false
 
 	active_++;
 }
@@ -70,7 +70,11 @@ MediaItems::~MediaItems()
 	active_--;
 }
 
-//set title of book
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Mutators
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//set name of item
 int MediaItems::setName(std::string new_name_)
 {
 	MediaItems::name_ = new_name_;
@@ -78,6 +82,7 @@ int MediaItems::setName(std::string new_name_)
 	return 0;
 }
 
+//set publication year of item
 int MediaItems::setPubYear(int new_year)
 {
 	if (new_year >= 0)
@@ -110,14 +115,19 @@ int MediaItems::setPrice(double new_price)
 	}
 }
 
-//set item elements
-int MediaItems::setElement(int start, int end, std::string name_, int elementNum)
+//add a new item element
+int MediaItems::addElement(int start, int end, std::string name_, int elementNum)
 //elementNum is not used but I included it to make it easier to change the program over later
 {
-	element_[element_num_].setStart(start);
-	element_[element_num_].setEnd(end);
-	element_[element_num_].setName(name_);
-	MediaItems::element_num_++;
+	Elements* new_element = new Elements;
+
+	(*new_element).setStart(start);
+	(*new_element).setEnd(end);
+	(*new_element).setName(name_);
+
+	element_.push_back(*new_element);
+
+	MediaItems::element_count_++;
 	modified(true);
 	return 0;
 }
@@ -130,14 +140,18 @@ int MediaItems::setAuthor(Author* new_author)
 	return 0;
 }
 
-//print out item
-const int MediaItems::toCout()
+// set a modified flag
+int MediaItems::modified(bool data)
 {
-	std::cout << (*this);
+	MediaItems::hasData = data;
 	return 0;
 }
 
-//get book title
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Accessors
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//get Item name
 const std::string MediaItems::getName()
 {
 	return MediaItems::name_;
@@ -167,25 +181,28 @@ const double MediaItems::getPrice()
 	return MediaItems::price;
 }
 
-//get the address of an elemtent in the array
-Elements* MediaItems::getElements(int elementNum)
+//!!!--Inefficient for large lists--!!!///
+//pass a copy of the element list to the function caller
+std::list<Elements> MediaItems::getElement()
 {
-	Elements* elem_addr = &element_[elementNum];
-
-	return elem_addr;
+	return element_;
 }
+
+//print out item
+const int MediaItems::toCout()
+{
+	std::cout << (*this);
+	return 0;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Predicate Functions
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //returns if the item is empty
 const bool MediaItems::isEmpty()
 {
 	return !(hasData);
-}
-
-// set a modified flag
-int MediaItems::modified(bool data)
-{
-	MediaItems::hasData = data;
-	return 0;
 }
 
 //return the number of constructed items
@@ -200,6 +217,10 @@ int MediaItems::clear()
 	MediaItems::active_ = MediaItems::active_ - 1; //active is increased when calling the constructor
 	return 0;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Overloads
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 std::ostream& operator<<(std::ostream &out, MediaItems &MI)
 {
@@ -238,19 +259,27 @@ std::ostream& operator<<(std::ostream &out, MediaItems &MI)
 			out << std::left << std::setw(TEXT_WIDTH) << "  Price" << " : $" << std::fixed << MI.getPrice() << std::endl;
 		}
 
-		//display elements if they exist; 
-		if ((*MI.getElements(0)).isEmpty() == true);
-		else if ((*MI.getElements(0)).isEmpty() == false)
+		//open an arbitrary scope for displaying the elements in the item
 		{
-			int count = 0;
-			while ((*MI.getElements(count)).isEmpty() == false)
+			//copy the list to allow full access and protect the real list from accedental/intentional modification
+			std::list<Elements>local_list = MI.getElement();
+			
+			//display elements if they exist; 
+			if (local_list.empty() == true); // check if the list is empty
+			else //if ((local_list.empty() == false)
 			{
-				out << (*MI.getElements(count));
-				count++;
-			}
-		}
-	}
+				//for loop creates an element list iterator 'it', and assigns the first element to that iterator, cycling throught all the elements in turn
+				//until 'it' equals the end element
+				for (std::list<Elements>::iterator it = local_list.begin(); it != local_list.end(); ++it)
+				{
+					out << *it;
+				}//for
+
+			}//else
+		}//close scope
+
+	}//close the if empty
 	return out;
-}
+}//close the overload
 
 #endif

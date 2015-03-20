@@ -17,17 +17,30 @@ private:
 	static int active_; // number of elements active
 
 public:
+	//Constructor Destructor
 	Elements();
 	~Elements();
+
+	//Mutators
 	void setStart(int);
 	void setEnd(int);
 	void setName(std::string);
 	void modified(bool);
+
+	//Accessors
+	int getStart();
+	int getEnd();
+	std::string getName();
+
+	//Predicate Functions
 	bool isEmpty();
 	int in_mem();
 	void toCout();
 
-	friend std::ostream& operator<<(std::ostream &out, Elements &Elem);
+	
 };
+
+//Function prototype for overload
+std::ostream& operator<<(std::ostream &out, Elements &Elem);
 
 #endif

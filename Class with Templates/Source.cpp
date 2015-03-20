@@ -16,8 +16,8 @@
 //#include <unistd.h> // isatty  for linux
 #include <iomanip> // included to make pretty output
 #include <typeinfo> //included to use typeid()
-#include <list>
-#include <vector>
+#include <list> //included for use of list template
+#include <vector> //included for use of vector template
 #endif
 
 //User Defined Class Includes
@@ -174,6 +174,46 @@ void process_menu_in(char inchar)
 	case '+':
 	{
 		//TODO: function that asks for item type and create the item
+		//query user as to what kind of item they want to add
+		std::cout << "What kind of item do you want to add : (M)usic, (V)ideo, (B)ook, (I)tem" << std::endl;
+		std::string type;
+		MediaItems* item_ptr;
+
+		//based on if the session is interactive read in the type
+		if (interactive)
+		{
+			std::getline(std::cin, type);
+		}
+		else if (!interactive)
+		{
+			std::cin >> type;
+		}
+
+
+		//based on the type create the item
+		switch (toupper(type[0]))
+		{
+		case 'M':
+			item_ptr = new Music;
+			break;
+
+		case 'V':
+			item_ptr = new Videos;
+			break;
+
+		case 'B':
+			item_ptr = new Books;
+			break;
+
+		default:
+			item_ptr = new MediaItems;
+			break;
+		}
+
+
+		items.push_back(item_ptr);
+		totalItems++;
+		ItemNum = totalItems;
 	}
 	break;
 
@@ -181,7 +221,10 @@ void process_menu_in(char inchar)
 	case '-':
 	{
 		//TODO: function that deletes the current item
-		std::cout << std::endl ;
+
+
+		
+		totalItems--;
 	}
 	break;
 
@@ -246,6 +289,11 @@ void process_menu_in(char inchar)
 	//Create an author object
 	case 'C':
 	{
+		Author* temp_ptr = new Author;
+		Authors.push_back(temp_ptr);
+		totalAuths++;
+		AuthNum = totalAuths;
+		
 		int born, died;
 		std::string name;
 
@@ -319,7 +367,7 @@ void process_menu_in(char inchar)
 		}
 
 
-		(*items[ItemNum]).setElement(start, end, name, num = 0);
+		(*items[ItemNum]).addElement(start, end, name, num = 0);
 
 	}
 	break;
@@ -474,7 +522,7 @@ void process_menu_in(char inchar)
 					{
 						Music* music_ptr = (Music*)items[count];
 						if ((*music_ptr).dispGENRESht((*music_ptr).getGENRE()) == (*music_ptr).dispGENRESht(type))
-						//comparing strings to allow comparison, enums refused to compile
+							//comparing strings to allow comparison, enums refused to compile
 						{
 							if (!((*music_ptr).isEmpty()))
 							{

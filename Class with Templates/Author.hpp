@@ -17,19 +17,28 @@ private:
 	static int active_; //number of active author objects
 
 public:
+	//Constructor Destructor
 	Author();
 	~Author();
-	const std::string getName();
+
+	//Mutators
 	void setBirth(int);
 	void setDeath(int);
 	void setName(std::string);
 	void modified(bool);
+
+	//Accessors 
+	const std::string getName();
+
+	//Predicate Functions
 	bool isEmpty();
 	int in_mem();
 	void toCout();
-
-	friend std::ostream& operator<<(std::ostream &out, Author &Auth);
-	friend std::istream& operator>>(std::istream &in, Author &Auth);
 };
+
+//Function prototypes for overloads
+std::ostream& operator<<(std::ostream &out, Author &Auth);
+std::istream& operator>>(std::istream &in, Author &Auth);
+
 
 #endif
