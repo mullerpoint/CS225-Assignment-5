@@ -1,0 +1,254 @@
+
+Menu [-] : 
+Authors in Memory     = 0 @ 16 Bytes Ea. 
+               Bytes  = 0
+Books in Memory       = 0 @ 96 Bytes Ea. 
+               Bytes  = 0
+Music in Memory       = 0 @ 120 Bytes Ea. 
+               Bytes  = 0
+Video in Memory       = 0 @ 88 Bytes Ea. 
+               Bytes  = 0
+Media Items in Memory = 0 @ 64 Bytes Ea. 
+               Bytes  = 0
+Elements in Memory = 0 @ 16 Bytes Ea. 
+               Bytes  = 0
+         Total Bytes  = 0
+
+Menu [-] : 
+=== Authors ===
+
+=== Media Items ===
+
+Menu [-] : 
+Menu [-] : Enter author year born : Enter author year died : Enter author name : Author [1] :  George Walton Lucas, Jr. created
+Menu [-] : 
+Menu [-] : Item added and selected
+
+Menu [0] : Enter Media Item name : 
+Menu [0] : Enter Media Item Year of Creation : 
+Menu [0] : Enter Author Index : Author set to George Walton Lucas, Jr.
+Menu [0] : Enter name of Director : 
+Menu [0] : Enter element start : Enter element end : Enter element name : Element Imperial Boarding Party added to Star Wars: A New Hope
+Menu [0] : Enter element start : Enter element end : Enter element name : Element The Death Star added to Star Wars: A New Hope
+Menu [0] : Enter element start : Enter element end : Enter element name : Element Back to the Ship added to Star Wars: A New Hope
+Menu [0] : 
+Menu [0] : Item added and selected
+
+Menu [1] : Enter Media Item name : 
+Menu [1] : Enter Media Item Year of Creation : 
+Menu [1] : Enter name of Director : 
+Menu [1] : Enter author year born : Enter author year died : Enter author name : Author [2] :  Leigh Brackett created
+Menu [1] : Enter Author Index : Author set to Leigh Brackett
+Menu [1] : 
+Menu [1] : Item added and selected
+
+Menu [2] : Enter Media Item name : 
+Menu [2] : Enter Media Item Year of Creation : 
+Menu [2] : Enter name of Director : 
+Menu [2] : Enter Author Index : Author set to George Walton Lucas, Jr.
+Menu [2] : Item added and selected
+
+Menu [3] : Enter Media Item name : 
+Menu [3] : Enter Media Item Year of Creation : 
+Menu [3] : Enter name of Director : 
+Menu [3] : Enter Author Index : Author set to George Walton Lucas, Jr.
+Menu [3] : 
+Menu [3] : Item added and selected
+
+Menu [4] : Enter Media Item name : 
+Menu [4] : Enter Media Item Year of Creation : 
+Menu [4] : Enter name of Director : 
+Menu [4] : 
+Menu [4] : Item added and selected
+
+Menu [5] : Enter Media Item name : 
+Menu [5] : Enter Media Item Year of Creation : 
+Menu [5] : Enter name of Director : 
+Menu [5] : Enter Author Index : Author set to George Walton Lucas, Jr.
+Menu [5] : 
+Menu [5] : Item added and selected
+
+Menu [6] : Enter Media Item name : 
+Menu [6] : Enter Media Item Year of Creation : 
+Menu [6] : Enter Producer name : 
+Menu [6] : Enter New Value : 
+Menu [6] : Item added and selected
+
+Menu [7] : Enter Media Item name : 
+Menu [7] : Enter New Value : 
+Menu [7] : Enter Media Item Year of Creation : 
+Menu [7] : Enter Media Item pages : 
+Menu [7] : Enter author year born : Enter author year died : Enter author name : Author [3] :  Kevin Hearne created
+Menu [7] : Enter Author Index : Author set to Kevin Hearne
+Menu [7] : Enter Book ISBN : 
+Menu [7] : 
+Menu [7] : Change selected Item to (#) : Item # 0 : Star Wars: A New Hope now selected.
+
+Menu [0] : Enter index of sequel media item
+Menu [0] : Change selected Item to (#) : Item # 1 : The Empire Strikes Back now selected.
+
+Menu [1] : Enter index of sequel media item
+Menu [1] : Change selected Item to (#) : Item # 3 : The Phantom Menace now selected.
+
+Menu [3] : Enter index of sequel media item
+Menu [3] : Change selected Item to (#) : Item # 4 : Attack of the Clones now selected.
+
+Menu [4] : Enter index of sequel media item
+Menu [4] : Change selected Item to (#) : Item # 5 : Revenge of the Sith now selected.
+
+Menu [5] : Enter index of sequel media item
+Menu [5] : 
+Menu [5] : 
+=== Authors ===
+Author[0]
+ Author    : George Walton Lucas, Jr.
+  Born     : 1944
+Author[1]
+ Author    : Leigh Brackett
+Author[2]
+ Author    : Kevin Hearne
+
+=== Media Items ===
+MediaItem[0]
+Video      : Star Wars: A New Hope
+  Author   : George Walton Lucas, Jr.
+  Year     : 1977
+ Element   : Imperial Boarding Party
+  Start    : 1
+  End      : 4
+ Element   : The Death Star
+  Start    : 36
+  End      : 39
+ Element   : Back to the Ship
+  Start    : 86
+  End      : 89
+  Sequel   : The Empire Strikes Back
+  Director : George Lucas
+MediaItem[1]
+Video      : The Empire Strikes Back
+  Author   : Leigh Brackett
+  Year     : 1980
+  Sequel   : Return of the Jedi
+  Director : Irvin Kershner
+MediaItem[2]
+Video      : Return of the Jedi
+  Author   : George Walton Lucas, Jr.
+  Year     : 1983
+  Director : Richard Marquand
+MediaItem[3]
+Video      : The Phantom Menace
+  Author   : George Walton Lucas, Jr.
+  Year     : 1999
+  Sequel   : Attack of the Clones
+  Director : George Lucas
+MediaItem[4]
+Video      : Attack of the Clones
+  Year     : 2002
+  Sequel   : Revenge of the Sith
+  Director : George Lucas
+MediaItem[5]
+Video      : Revenge of the Sith
+  Author   : George Walton Lucas, Jr.
+  Year     : 2005
+  Sequel   : Star Wars: A New Hope
+  Director : George Lucas
+MediaItem[6]
+Music      : The Music of John Williams: The Definitive Collection
+  Year     : 2012
+  Value    : $50.98
+  Producer : Prague Philharmonic Orchestra
+MediaItem[7]
+Book       : Heir to the Jedi: Star Wars
+  Author   : Kevin Hearne
+  Year     : 2015
+  Value    : $20.52
+  ISBN     : 978-0345544858
+  Pages    : 304
+
+Menu [5] : ==> Sorting Media Items
+
+Menu [3] : 
+=== Authors ===
+Author[0]
+ Author    : George Walton Lucas, Jr.
+  Born     : 1944
+Author[1]
+ Author    : Leigh Brackett
+Author[2]
+ Author    : Kevin Hearne
+
+=== Media Items ===
+MediaItem[0]
+Video      : Attack of the Clones
+  Year     : 2002
+  Sequel   : Revenge of the Sith
+  Director : George Lucas
+MediaItem[1]
+Book       : Heir to the Jedi: Star Wars
+  Author   : Kevin Hearne
+  Year     : 2015
+  Value    : $20.52
+  ISBN     : 978-0345544858
+  Pages    : 304
+MediaItem[2]
+Video      : Return of the Jedi
+  Author   : George Walton Lucas, Jr.
+  Year     : 1983
+  Director : Richard Marquand
+MediaItem[3]
+Video      : Revenge of the Sith
+  Author   : George Walton Lucas, Jr.
+  Year     : 2005
+  Sequel   : Star Wars: A New Hope
+  Director : George Lucas
+MediaItem[4]
+Video      : Star Wars: A New Hope
+  Author   : George Walton Lucas, Jr.
+  Year     : 1977
+ Element   : Imperial Boarding Party
+  Start    : 1
+  End      : 4
+ Element   : The Death Star
+  Start    : 36
+  End      : 39
+ Element   : Back to the Ship
+  Start    : 86
+  End      : 89
+  Sequel   : The Empire Strikes Back
+  Director : George Lucas
+MediaItem[5]
+Video      : The Empire Strikes Back
+  Author   : Leigh Brackett
+  Year     : 1980
+  Sequel   : Return of the Jedi
+  Director : Irvin Kershner
+MediaItem[6]
+Music      : The Music of John Williams: The Definitive Collection
+  Year     : 2012
+  Value    : $50.98
+  Producer : Prague Philharmonic Orchestra
+MediaItem[7]
+Video      : The Phantom Menace
+  Author   : George Walton Lucas, Jr.
+  Year     : 1999
+  Sequel   : Attack of the Clones
+  Director : George Lucas
+
+Menu [3] : 
+Authors in Memory     = 3 @ 16 Bytes Ea. 
+               Bytes  = 48
+Books in Memory       = 1 @ 96 Bytes Ea. 
+               Bytes  = 96
+Music in Memory       = 1 @ 120 Bytes Ea. 
+               Bytes  = 120
+Video in Memory       = 6 @ 88 Bytes Ea. 
+               Bytes  = 528
+Media Items in Memory = 8 @ 64 Bytes Ea. 
+               Bytes  = 512
+Elements in Memory = 3 @ 16 Bytes Ea. 
+               Bytes  = 48
+         Total Bytes  = 840
+
+Menu [3] : 
+Goodbye...
+

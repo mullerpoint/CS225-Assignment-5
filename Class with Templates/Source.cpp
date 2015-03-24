@@ -40,7 +40,6 @@ int interactive = _isatty(_fileno(stdin)); //windowns statement
 //define global pointers for media item objects
 std::vector<MediaItems *>items;
 int ItemNum = 0;
-int totalItems = 0;
 //
 
 //define global pointers for author objects
@@ -57,8 +56,8 @@ std::locale* locale;
 int init_mixed_array();
 void process_menu_in(char);
 void print_menu();
-void print_Authors();
-void print_MediaItems();
+int printAuthors();
+int printItems();
 //
 
 
@@ -127,46 +126,8 @@ void process_menu_in(char inchar)
 	// Print all objects
 	case '*':
 	{
-		//Print out all author objects
-		std::cout << std::endl << std::endl << "==== All Authors Start ====" << std::endl;
-		int count = 0;
-		while (count <= (totalAuths - 1))
-		{
-			if ((*Authors[count]).isEmpty());
-			//isempty() returns the hasData value which is false for an object with no data and true for an object with data, hence the ! to invert the return value
-			else
-			{
-				std::cout << std::endl << "Author [" << count << "] :" << std::endl;
-				(*Authors[count]).toCout();
-			}
-			count++;
-		}
-
-		std::cout << std::endl << std::endl << std::left << std::setw(TEXT_WIDTH) << "  Authors in Memory" << " : " << (*Authors[0]).in_mem() << std::endl
-			<< std::left << std::setw(TEXT_WIDTH) << "    Memory Used" << " : " << sizeof(Author)*(*Authors[0]).in_mem() << " Bytes";
-
-		std::cout << std::endl << "===== All Authors End =====" << std::endl;
-
-		//Print out all Media Item Objects
-		std::cout << std::endl << std::endl << "===== All Items Start =====" << std::endl;
-		count = 0;
-		while (count <= (totalItems - 1))
-		{
-			if ((*items[count]).isEmpty());
-			else //if (mixed_array[count].isEmpty() == true)
-			{
-				std::cout << std::endl << "Item [" << count << "]" << std::endl;
-				(*items[count]).toCout();
-			}
-			count++;
-		}
-
-		std::cout << std::endl << std::endl << std::left << std::setw(TEXT_WIDTH) << "  Items in Memory" << " : " << (*items[0]).in_mem() << std::endl
-			<< std::left << std::setw(TEXT_WIDTH) << "    Memory Used" << " : " << sizeof(MediaItems)*(*items[0]).in_mem() << " Bytes";
-
-		std::cout << std::endl << "====== All Items End ======" << std::endl;
-
-		std::cout << std::endl << std::left << std::setw(TEXT_WIDTH) << "  Total Memory Used" << " : " << (sizeof(MediaItems)*(*items[0]).in_mem()) + (sizeof(Author)*(*Authors[0]).in_mem()) << " Bytes";
+		printAuthors();
+		printItems();
 	}
 	break;
 
@@ -212,8 +173,7 @@ void process_menu_in(char inchar)
 
 
 		items.push_back(item_ptr);
-		totalItems++;
-		ItemNum = totalItems;
+		ItemNum = items.size();
 	}
 	break;
 
@@ -222,27 +182,27 @@ void process_menu_in(char inchar)
 	{
 		//TODO: function that deletes the current item
 
-
-		
-		totalItems--;
+		delete items[ItemNum];
+		items.erase(items.begin() + ItemNum, items.begin() + ItemNum);
+		ItemNum = items.size();
 	}
 	break;
 
-	// set a custom item number between 0-totalItems
+	// set a custom item number between 0-items.size()
 	case '#':
 	{
 		//declare temp vaiable and read in user value
-		int new_itemNum;
+		unsigned int new_itemNum;
 		std::cout << "Enter new item number : ";
 		std::cin >> new_itemNum;
 
 		//validate input
-		if ((new_itemNum >= 0) && (new_itemNum <= (totalItems - 1)))
+		if ((new_itemNum >= 0) && (new_itemNum <= (items.size())))
 		{
 			ItemNum = new_itemNum;
 		}
 		else{
-			std::cout << "Please enter a valid number beteen 0-" << totalItems;
+			std::cout << "Please enter a valid number beteen 0-" << items.size();
 		}
 
 		//clear buffer for next input
@@ -486,13 +446,13 @@ void process_menu_in(char inchar)
 	//List Music by GENRE
 	case 'L':
 	{
-		int count = 0;
+		unsigned int count = 0;
 		int numPrinted = 0;
 		bool found = false;
 		Music* firstMusicObj = NULL;
 
 		//determine if their are any music objects and save the location of the first one 
-		while ((count < totalItems) && (found == false))
+		while ((count < items.size()) && (found == false))
 		{
 			if (typeid(*(items[count])) == typeid(Music))
 			{
@@ -516,7 +476,7 @@ void process_menu_in(char inchar)
 				std::cout << std::endl << "===== GENRE : " << (*firstMusicObj).dispGENRE(type) << " =====" << std::endl;
 				count = 0;
 				numPrinted = 0;
-				while (count < totalItems)
+				while (count < items.size())
 				{
 					if (typeid(*items[count]) == typeid(Music))
 					{
@@ -587,15 +547,32 @@ void process_menu_in(char inchar)
 		// show memory useage
 	case 'R':
 	{
+		int numBooks = 0, numMusic = 0, numVideos = 0, numMIs = 0;
+		unsigned int numAuths = Authors.size();
+		if ((items.size() == 0) && (Authors.size() == 0));
+		else
+		{
+			for (MediaItems *element:items)
+			{
+				if (typeid(*element) == typeid(MediaItems)) numMIs++;
+				else if (typeid(*element) == typeid(Books)) numBooks++;
+				else if (typeid(*element) == typeid(Music)) numMusic++;
+				else if (typeid(*element) == typeid(Videos)) numVideos++;
+				
+			}
+		}
+
+
+		
 		std::cout
-			<< std::left << std::setw(28) << "Memory Used for Authors" << " : " << sizeof(Author)*(*Authors[0]).in_mem() << " Bytes"
-			<< std::endl << std::left << std::setw(28) << "Memory Used for Media Items" << " : " << sizeof(MediaItems)*(*items[60]).in_mem() << " Bytes"
-			<< std::endl << std::left << std::setw(28) << "Memory Used for Book Items" << " : " << sizeof(Books)*(*items[0]).in_mem() << " Bytes"
-			<< std::endl << std::left << std::setw(28) << "Memory Used for Music Items" << " : " << sizeof(Music)*(*items[20]).in_mem() << " Bytes"
-			<< std::endl << std::left << std::setw(28) << "Memory Used for Video Items" << " : " << sizeof(Videos)*(*items[40]).in_mem() << " Bytes"
-			<< std::endl << std::left << std::setw(28) << "  Total Memory Used" << " : " <<
-			(sizeof(MediaItems)*(*items[60]).in_mem()) + (sizeof(Author)*(*Authors[0]).in_mem() +
-			sizeof(Books)*(*items[0]).in_mem() + sizeof(Music)*(*items[20]).in_mem() + sizeof(Videos)*(*items[40]).in_mem()) << " Bytes";
+			<< std::endl << std::left << std::setw(28) << "Total Memory Used" << " : " << (sizeof(MediaItems)*numMIs +
+			(sizeof(Author)*numAuths) + sizeof(Books)*numBooks + sizeof(Music)*numMusic + sizeof(Videos)*numVideos) << " Bytes"
+			<< std::endl << std::left << std::setw(28) << "  Authors" << " : " << sizeof(Author)*numAuths << " Bytes"
+			<< std::endl << std::left << std::setw(28) << "  Media Items" << " : " << sizeof(MediaItems)*numMIs << " Bytes"
+			<< std::endl << std::left << std::setw(28) << "  Book Items" << " : " << sizeof(Books)*numBooks << " Bytes"
+			<< std::endl << std::left << std::setw(28) << "  Music Items" << " : " << sizeof(Music)*numMusic << " Bytes"
+			<< std::endl << std::left << std::setw(28) << "  Video Items" << " : " << sizeof(Videos)*numVideos << " Bytes";
+			
 
 	}
 	break;
@@ -698,4 +675,75 @@ void print_menu()
 		<< "I - Set Media Item In Print Status(0 / 1)" << std::endl
 		<< "V - Set Media Item Value" << std::endl
 		<< "Y - Set Media Item Year Produced" << std::endl << std::endl;
+}
+
+
+int printAuthors()
+{
+	//Print out all author objects
+	std::cout << std::endl << std::endl << "==== All Authors Start ====" << std::endl;
+	
+	if (Authors.size() != 0)//check if there are any authors to print out
+	{
+		unsigned int count = 0;
+
+		while (count <= (Authors.size() - 1))
+		{
+			if ((*Authors[count]).isEmpty());
+			//isempty() returns the hasData value which is false for an object with no data and true for an object with data, hence the ! to invert the return value
+			else
+			{
+				std::cout << std::endl << "Author [" << count << "] :" << std::endl;
+				(*Authors[count]).toCout();
+			}
+			count++;
+		}
+	}
+	else if (Authors.size() == 0)
+	{
+		std::cout << "There are no Authors to Print" << std::endl;
+	}
+
+	//print memory use
+	std::cout << std::endl << std::endl << std::left << std::setw(TEXT_WIDTH) << "  Authors in Memory" << " : " << (*Authors[0]).in_mem() << std::endl
+		<< std::left << std::setw(TEXT_WIDTH) << "    Memory Used" << " : " << sizeof(Author)*(*Authors[0]).in_mem() << " Bytes";
+
+	std::cout << std::endl << "===== All Authors End =====" << std::endl;
+
+	return 0;
+}
+
+int printItems()
+{
+	//Print out all Media Item Objects
+	std::cout << std::endl << std::endl << "===== All Items Start =====" << std::endl;
+	
+	if (items.size() != 0) //check if there are any items to print out
+	{
+		unsigned int count = 0;
+
+		while (count <= (items.size()))
+		{
+			if ((*items[count]).isEmpty());
+			else //if (mixed_array[count].isEmpty() == true)
+			{
+				std::cout << std::endl << "Item [" << count << "]" << std::endl;
+				(*items[count]).toCout();
+			}
+			count++;
+		}
+	}
+	else if (items.size() == 0)
+	{
+		std::cout << "There are no Items to Print" << std::endl;
+	}
+
+	std::cout << std::endl << std::endl << std::left << std::setw(TEXT_WIDTH) << "  Items in Memory" << " : " << (*items[0]).in_mem() << std::endl
+		<< std::left << std::setw(TEXT_WIDTH) << "    Memory Used" << " : " << sizeof(MediaItems)*(*items[0]).in_mem() << " Bytes";
+
+	std::cout << std::endl << "====== All Items End ======" << std::endl;
+
+	std::cout << std::endl << std::left << std::setw(TEXT_WIDTH) << "  Total Memory Used" << " : " << (sizeof(MediaItems)*(*items[0]).in_mem()) + (sizeof(Author)*(*Authors[0]).in_mem()) << " Bytes";
+
+	return 0;
 }

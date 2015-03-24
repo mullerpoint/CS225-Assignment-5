@@ -1,0 +1,76 @@
+r
+* 
+// Authors
+c 1944 0 George Walton Lucas, Jr.
+// Movies
++ v
+n Star Wars: A New Hope
+y 1977
+t 0
+f George Lucas
+e 1 4 Imperial Boarding Party
+e 36 39 The Death Star
+e 86 89 Back to the Ship
+// s 41
++ v
+n The Empire Strikes Back
+y 1980
+f Irvin Kershner
+c 0 0 Leigh Brackett
+t 1
+// s 42
++ v
+n Return of the Jedi
+y 1983
+f Richard Marquand
+t 0
++ v
+n The Phantom Menace
+y 1999
+f George Lucas
+t 0
+// s 44
++ v
+n Attack of the Clones
+y 2002
+f George Lucas
+// s 45
++ v
+n Revenge of the Sith
+y 2005
+f George Lucas
+t 0
+// s 40
++ m
+n The Music of John Williams: The Definitive Collection
+y 2012
+f Prague Philharmonic Orchestra
+v 50.98
++ b
+n Heir to the Jedi: Star Wars
+v 20.52
+y 2015
+p 304
+c 0 0 Kevin Hearne
+t 2
+j 978-0345544858
+// Set Sequels
+# 0
+s 1
+# 1
+s 2
+# 3
+s 4
+# 4
+s 5
+# 5
+s 0
+// Output
+*
+u
+*
+r
+q
+q
+q
+

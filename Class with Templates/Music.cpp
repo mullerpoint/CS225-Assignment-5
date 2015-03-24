@@ -271,11 +271,10 @@ std::ostream& operator<<(std::ostream &out, Music &music)
 			if (local_list.empty() == true); // check if the list is empty
 			else //if ((local_list.empty() == false)
 			{
-				//for loop creates an element list iterator 'it', and assigns the first element to that iterator, cycling throught all the elements in turn
-				//until 'it' equals the end element
-				for (std::list<Elements>::iterator it = local_list.begin(); it != local_list.end(); ++it)
+				//for loop to cycle through all the elements in local_list
+				for (Elements elem : local_list)
 				{
-					out << *it;
+					out << elem;
 				}//for
 
 			}//else
