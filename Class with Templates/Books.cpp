@@ -20,6 +20,7 @@
 #include <typeinfo> //included to use typeid()
 #include <list> //included for use of list template
 #include <vector> //included for use of vector template
+#include <algorithm> //included to use sort()
 #endif
 
 // include header file

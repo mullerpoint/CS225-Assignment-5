@@ -20,6 +20,7 @@
 #include <typeinfo> //included to use typeid()
 #include <list> //included for use of list template
 #include <vector> //included for use of vector template
+#include <algorithm> //included to use sort()
 #endif
 
 // include header file
@@ -244,14 +245,14 @@ std::ostream& operator<<(std::ostream &out, Music &music)
 		if (music.getProducer() == DEF_Producer_);
 		else
 		{
-			out << std::left << std::setw(TEXT_WIDTH) << "  director_" << " : " << music.getProducer() << std::endl;
+			out << std::left << std::setw(TEXT_WIDTH) << "  Director" << " : " << music.getProducer() << std::endl;
 		}
 
 		//display minutes_
 		if (music.getrunTime() == DEF_MIN);
 		else
 		{
-			out << std::left << std::setw(TEXT_WIDTH) << "  minutes_" << " : " << music.getrunTime() << std::endl;
+			out << std::left << std::setw(TEXT_WIDTH) << "  Minutes" << " : " << music.getrunTime() << std::endl;
 		}
 
 		//Display GENRE
@@ -259,7 +260,7 @@ std::ostream& operator<<(std::ostream &out, Music &music)
 		if (music.dispGENRESht(music.getGENRE()) == music.dispGENRESht(Music::GENRE::UDEF));
 		else
 		{
-			out << std::left << std::setw(TEXT_WIDTH) << "  GENRE" << " : " << music.dispGENRE(music.getGENRE()) << std::endl;
+			out << std::left << std::setw(TEXT_WIDTH) << "  Genre" << " : " << music.dispGENRE(music.getGENRE()) << std::endl;
 		}
 
 		//open an arbitrary scope for displaying the elements in the item

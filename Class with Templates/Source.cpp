@@ -18,6 +18,7 @@
 #include <typeinfo> //included to use typeid()
 #include <list> //included for use of list template
 #include <vector> //included for use of vector template
+#include <algorithm> //included to use sort()
 #endif
 
 //User Defined Class Includes
@@ -58,6 +59,8 @@ void process_menu_in(char);
 void print_menu();
 int printAuthors();
 int printItems();
+int memUse();
+std::string trim(const std::string&, const std::string& whitespace = " \t");
 //
 
 
@@ -123,15 +126,7 @@ void process_menu_in(char inchar)
 	}
 	break;
 
-	// Print all objects
-	case '*':
-	{
-		printAuthors();
-		printItems();
-	}
-	break;
-
-	//increase item number by 1
+	//add new item and set current item to that item
 	case '+':
 	{
 		//TODO: function that asks for item type and create the item
@@ -173,18 +168,24 @@ void process_menu_in(char inchar)
 
 
 		items.push_back(item_ptr);
+		ItemNum = items.size() - 1;
+	}
+	break;
+
+	//delete the current item
+	case '-':
+	{
+		delete items[ItemNum];
+		items.erase(items.begin() + ItemNum, items.begin() + ItemNum);
 		ItemNum = items.size();
 	}
 	break;
 
-	//decrease item number by 1
-	case '-':
+	// Print all objects
+	case '*':
 	{
-		//TODO: function that deletes the current item
-
-		delete items[ItemNum];
-		items.erase(items.begin() + ItemNum, items.begin() + ItemNum);
-		ItemNum = items.size();
+		printAuthors();
+		printItems();
 	}
 	break;
 
@@ -251,9 +252,8 @@ void process_menu_in(char inchar)
 	{
 		Author* temp_ptr = new Author;
 		Authors.push_back(temp_ptr);
-		totalAuths++;
-		AuthNum = totalAuths;
-		
+		AuthNum = Authors.size() - 1 ;
+
 		int born, died;
 		std::string name;
 
@@ -261,6 +261,7 @@ void process_menu_in(char inchar)
 		{
 			std::cout << "Please enter the Authors name :";
 			std::getline(std::cin, name);
+			name = trim(name);
 			(*Authors[AuthNum]).setName(name);
 
 
@@ -302,13 +303,16 @@ void process_menu_in(char inchar)
 
 		if (interactive)
 		{
+			//get start
 			std::cout << "Please enter the Element name_ : ";
 			std::getline(std::cin, name);
 
+			//get end
 			std::cout << "Please enter the Element start, Zero(0) for none : ";
 			std::cin >> start;
 			std::cin.ignore(1, '\n');
 
+			//get end
 			std::cout << "Please enter the Element end, Zero(0) for none : ";
 			std::cin >> end;
 			std::cin.ignore(1, '\n');
@@ -316,17 +320,23 @@ void process_menu_in(char inchar)
 		}
 		else //scripted
 		{
+			//get start
 			std::cin >> start;
 			std::cin.ignore(1, '\n');
 
+			//get end
 			std::cin >> end;
 			std::cin.ignore(1, '\n');
 
+			//get name
 			std::getline(std::cin, name);
-			(*Authors[AuthNum]).setName(name);
+			//(*Authors[AuthNum]).setName(name);
 		}
 
+		//clear leading whitespace
+		name = trim(name);
 
+		//pass all acquired data to the add element funciton
 		(*items[ItemNum]).addElement(start, end, name, num = 0);
 
 	}
@@ -341,6 +351,8 @@ void process_menu_in(char inchar)
 			std::cout << "Please enter the Producer or director : ";
 			std::getline(std::cin, executive);
 
+			//clear leading whitespace
+			executive = trim(executive);
 
 			if (typeid(*items[ItemNum]) == typeid(Music))
 			{
@@ -392,6 +404,7 @@ void process_menu_in(char inchar)
 			std::string isbn;
 			std::cout << "Please enter the Book ISBN :";
 			std::getline(std::cin, isbn);
+			isbn = trim(isbn);
 			(*book_ptr).setISBN(isbn);
 		}
 		else
@@ -516,10 +529,11 @@ void process_menu_in(char inchar)
 		// enter item name_ menu option
 	case 'N':
 	{
-		std::string new_name_;
+		std::string new_name;
 		std::cout << "Enter Media Item Title : ";
-		std::getline(std::cin, new_name_);
-		(*items[ItemNum]).setName(new_name_);
+		std::getline(std::cin, new_name);
+		new_name = trim(new_name);
+		(*items[ItemNum]).setName(new_name);
 	}
 	break;
 
@@ -547,33 +561,7 @@ void process_menu_in(char inchar)
 		// show memory useage
 	case 'R':
 	{
-		int numBooks = 0, numMusic = 0, numVideos = 0, numMIs = 0;
-		unsigned int numAuths = Authors.size();
-		if ((items.size() == 0) && (Authors.size() == 0));
-		else
-		{
-			for (MediaItems *element:items)
-			{
-				if (typeid(*element) == typeid(MediaItems)) numMIs++;
-				else if (typeid(*element) == typeid(Books)) numBooks++;
-				else if (typeid(*element) == typeid(Music)) numMusic++;
-				else if (typeid(*element) == typeid(Videos)) numVideos++;
-				
-			}
-		}
-
-
-		
-		std::cout
-			<< std::endl << std::left << std::setw(28) << "Total Memory Used" << " : " << (sizeof(MediaItems)*numMIs +
-			(sizeof(Author)*numAuths) + sizeof(Books)*numBooks + sizeof(Music)*numMusic + sizeof(Videos)*numVideos) << " Bytes"
-			<< std::endl << std::left << std::setw(28) << "  Authors" << " : " << sizeof(Author)*numAuths << " Bytes"
-			<< std::endl << std::left << std::setw(28) << "  Media Items" << " : " << sizeof(MediaItems)*numMIs << " Bytes"
-			<< std::endl << std::left << std::setw(28) << "  Book Items" << " : " << sizeof(Books)*numBooks << " Bytes"
-			<< std::endl << std::left << std::setw(28) << "  Music Items" << " : " << sizeof(Music)*numMusic << " Bytes"
-			<< std::endl << std::left << std::setw(28) << "  Video Items" << " : " << sizeof(Videos)*numVideos << " Bytes";
-			
-
+		memUse();
 	}
 	break;
 
@@ -614,7 +602,11 @@ void process_menu_in(char inchar)
 	}
 	break;
 
-
+	case 'U':
+	{
+		std::sort(std::begin(items), std::end(items));
+	}
+	break;
 
 	// set the item value ($)
 	case 'V':
@@ -649,41 +641,39 @@ void process_menu_in(char inchar)
 void print_menu()
 {
 	std::cout << std::endl
-		<< "00 - 19 : Books" << std::endl
-		<< "20 - 39 : Music" << std::endl
-		<< "40 - 59 : Videos" << std::endl
-		<< "60 - 79 : Media Items" << std::endl
-		<< "*-Display data for all Media Items" << std::endl
-		<< "+/ -Increment / Decrement the selected Item w / in Array" << std::endl
-		<< "# Set the selected Media Item" << std::endl
+		<< "+ - Create & Select new Media Item of[B, M, V, *] types" << std::endl
+		<< "- - Delete selected Media Item" << std::endl
+		<< "* - Display / Print all Media Items" << std::endl
+		<< "# - Set the selected Media Item" << std::endl
 		<< "0 - Clear selected Media Item data" << std::endl
 		<< "B - set Media Item duration / time" << std::endl
 		<< "C - Create author" << std::endl
 		<< "D - Display selected Media Item data" << std::endl
 		<< "E - Add Media Item element" << std::endl
-		<< "F - Set Music / Video Producer / director respectively" << std::endl
+		<< "F - Set Music / Video Producer / Director respectively" << std::endl
+		<< "I - Set Media Item In Print Status(0 / 1)" << std::endl
 		<< "J - Set Book ISBN" << std::endl
 		<< "K - set Music Genre" << std::endl
 		<< "L - Display Music Items by Genre" << std::endl
 		<< "M - Print this menu" << std::endl
-		<< "N - Set Media Item name_" << std::endl
+		<< "N - Set Media Item name" << std::endl
 		<< "Q - Quit this program" << std::endl
 		<< "P - Set Media Item pages" << std::endl
 		<< "R - Display program memory usage" << std::endl
 		<< "S - Set Media Item Sequel from Index" << std::endl
 		<< "T - Set Media Item Author Index" << std::endl
-		<< "I - Set Media Item In Print Status(0 / 1)" << std::endl
+		<< "U - Sort Media Item Aggregation by Name" << std::endl
 		<< "V - Set Media Item Value" << std::endl
 		<< "Y - Set Media Item Year Produced" << std::endl << std::endl;
 }
 
-
+//Print Authors
 int printAuthors()
 {
 	//Print out all author objects
 	std::cout << std::endl << std::endl << "==== All Authors Start ====" << std::endl;
-	
-	if (Authors.size() != 0)//check if there are any authors to print out
+
+	if (!Authors.empty())//check if there are any authors to print out
 	{
 		unsigned int count = 0;
 
@@ -699,30 +689,28 @@ int printAuthors()
 			count++;
 		}
 	}
-	else if (Authors.size() == 0)
+	else //if (Authors.empty())
 	{
 		std::cout << "There are no Authors to Print" << std::endl;
 	}
-
-	//print memory use
-	std::cout << std::endl << std::endl << std::left << std::setw(TEXT_WIDTH) << "  Authors in Memory" << " : " << (*Authors[0]).in_mem() << std::endl
-		<< std::left << std::setw(TEXT_WIDTH) << "    Memory Used" << " : " << sizeof(Author)*(*Authors[0]).in_mem() << " Bytes";
 
 	std::cout << std::endl << "===== All Authors End =====" << std::endl;
 
 	return 0;
 }
 
+//Print out all the Media Items
 int printItems()
 {
 	//Print out all Media Item Objects
 	std::cout << std::endl << std::endl << "===== All Items Start =====" << std::endl;
-	
-	if (items.size() != 0) //check if there are any items to print out
+
+	if (!items.empty()) //check if there are any items to print out
 	{
 		unsigned int count = 0;
 
-		while (count <= (items.size()))
+		while (count <= (items.size() - 1)) 
+		//the '- 1' is to account for the fact that item '1' is array position '0'
 		{
 			if ((*items[count]).isEmpty());
 			else //if (mixed_array[count].isEmpty() == true)
@@ -733,17 +721,65 @@ int printItems()
 			count++;
 		}
 	}
-	else if (items.size() == 0)
+	else //if (items.empty())
 	{
 		std::cout << "There are no Items to Print" << std::endl;
 	}
 
-	std::cout << std::endl << std::endl << std::left << std::setw(TEXT_WIDTH) << "  Items in Memory" << " : " << (*items[0]).in_mem() << std::endl
-		<< std::left << std::setw(TEXT_WIDTH) << "    Memory Used" << " : " << sizeof(MediaItems)*(*items[0]).in_mem() << " Bytes";
-
 	std::cout << std::endl << "====== All Items End ======" << std::endl;
 
-	std::cout << std::endl << std::left << std::setw(TEXT_WIDTH) << "  Total Memory Used" << " : " << (sizeof(MediaItems)*(*items[0]).in_mem()) + (sizeof(Author)*(*Authors[0]).in_mem()) << " Bytes";
+	return 0;
+}
+
+int memUse()
+{
+
+	//create a count for each of the types of item
+	unsigned int numBooks = 0, numMusic = 0, numVideos = 0, numMIs = 0, numAuths = 0;
+
+	//set the authors count
+	if (Authors.empty());
+	else
+	{
+		numAuths = Authors.size();
+	}
+
+	//tally each of the media item types
+	if ((items.empty()) && (Authors.empty()));
+	else
+	{
+		for (MediaItems *element : items)
+		{
+			if (typeid(*element) == typeid(MediaItems)) numMIs++;
+			else if (typeid(*element) == typeid(Books)) numBooks++;
+			else if (typeid(*element) == typeid(Music)) numMusic++;
+			else if (typeid(*element) == typeid(Videos)) numVideos++;
+
+		}
+	}
+
+
+	std::cout
+		<< std::endl << std::left << std::setw(28) << "Total Memory Used" << " : " << (sizeof(MediaItems)*numMIs +
+		(sizeof(Author)*numAuths) + sizeof(Books)*numBooks + sizeof(Music)*numMusic + sizeof(Videos)*numVideos) << " Bytes"
+		<< std::endl << std::left << std::setw(28) << "  Authors" << " : " << sizeof(Author)*numAuths << " Bytes"
+		<< std::endl << std::left << std::setw(28) << "  Media Items" << " : " << sizeof(MediaItems)*numMIs << " Bytes"
+		<< std::endl << std::left << std::setw(28) << "  Book Items" << " : " << sizeof(Books)*numBooks << " Bytes"
+		<< std::endl << std::left << std::setw(28) << "  Music Items" << " : " << sizeof(Music)*numMusic << " Bytes"
+		<< std::endl << std::left << std::setw(28) << "  Video Items" << " : " << sizeof(Videos)*numVideos << " Bytes";
 
 	return 0;
+}
+
+//remove leading white space 
+std::string trim(const std::string& str, const std::string& whitespace)
+{
+	const auto strBegin = str.find_first_not_of(whitespace);
+	if (strBegin == std::string::npos)
+		return ""; // no content
+
+	const auto strEnd = str.find_last_not_of(whitespace);
+	const auto strRange = strEnd - strBegin + 1;
+
+	return str.substr(strBegin, strRange);
 }

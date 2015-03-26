@@ -20,6 +20,7 @@
 #include <typeinfo> //included to use typeid()
 #include <list> //included for use of list template
 #include <vector> //included for use of vector template
+#include <algorithm> //included to use sort()
 #endif
 
 //includes for external dependencies
@@ -266,7 +267,7 @@ std::ostream& operator<<(std::ostream &out, MediaItems &MI)
 		{
 			//copy the list to allow full access and protect the real list from accedental/intentional modification
 			std::list<Elements>local_list = MI.getElement();
-			
+
 			//display elements if they exist; 
 			if (local_list.empty() == true); // check if the list is empty
 			else //if ((local_list.empty() == false)
@@ -283,5 +284,11 @@ std::ostream& operator<<(std::ostream &out, MediaItems &MI)
 	}//close the if empty
 	return out;
 }//close the overload
+
+//define less than operator for use with sort function
+bool operator<(MediaItems& lhs, MediaItems& rhs)
+{
+	return lhs.getName() < rhs.getName();
+}
 
 #endif

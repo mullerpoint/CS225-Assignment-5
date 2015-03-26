@@ -20,6 +20,7 @@
 #include <typeinfo> //included to use typeid()
 #include <list> //included for use of list template
 #include <vector> //included for use of vector template
+#include <algorithm> //included to use sort()
 #endif
 
 // include header file
@@ -179,14 +180,14 @@ std::ostream& operator<<(std::ostream &out, Videos &Video)
 		if (Video.getdirector() == DEF_director_);
 		else
 		{
-			out << std::left << std::setw(TEXT_WIDTH) << "  director_" << " : " << Video.getdirector() << std::endl;
+			out << std::left << std::setw(TEXT_WIDTH) << "  Director" << " : " << Video.getdirector() << std::endl;
 		}
 
 		//display runTime_ if set
 		if (Video.getrunTime() == DEF_runTime_);
 		else
 		{
-			out << std::left << std::setw(TEXT_WIDTH) << "  runTime_" << " : " << Video.getrunTime();
+			out << std::left << std::setw(TEXT_WIDTH) << "  Run Time" << " : " << Video.getrunTime();
 		}
 
 		//display sequel if set
