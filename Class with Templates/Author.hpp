@@ -41,4 +41,4 @@ std::ostream& operator<<(std::ostream &out, Author &Auth);
 std::istream& operator>>(std::istream &in, Author &Auth);
 
 
-#endif
+#endif 

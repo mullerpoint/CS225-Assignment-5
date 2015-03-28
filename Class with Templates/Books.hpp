@@ -42,4 +42,4 @@ public:
 	int clear();
 };
 
-#endif
+#endif 

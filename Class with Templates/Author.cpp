@@ -175,4 +175,4 @@ std::istream& operator>>(std::istream &in, Author &Auth)
 	return in;
 }
 
-#endif
+#endif 

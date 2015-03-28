@@ -191,8 +191,7 @@ void process_menu_in(char inchar)
 	//delete the current item
 	case '-':
 	{
-		void* itemToDel = items[ItemNum];
-		delete itemToDel;
+		delete items[ItemNum];
 		items.erase(items.begin() + (ItemNum));
 		std::cout << "Item " << (ItemNum) << " deleted; Plese select a new item before continuing." << std::endl;
 		(ItemNum) = -1;
@@ -822,4 +821,4 @@ std::string trim(const std::string& str, const std::string& whitespace)
 bool alphaSort(MediaItems* lhs, MediaItems* rhs)
 {
 	return (int)(((*lhs).getName())[0]) < (int)(((*rhs).getName())[0]);
-}
+} 

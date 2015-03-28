@@ -64,4 +64,4 @@ public:
 	virtual int clear();
 };
 
-#endif
+#endif 
