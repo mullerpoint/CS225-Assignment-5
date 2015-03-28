@@ -14,7 +14,7 @@ private:
 	int pages; //pages in the book
 	bool in_print; // if the book is still in print or not
 	bool in_print_def; // if the in_print variable has been set
-	Books* sequel_ptr_; // pointer to the sequel book item
+	std::string sequel_; // pointer to the sequel book item
 
 
 public:
@@ -26,13 +26,14 @@ public:
 	int setPages(int);
 	int setInPrint(bool);
 	int setSequel(Books*);
+	int setSequel_str(std::string);
 	int setISBN(std::string);
 
 	//Accessors
 	const int getPages();
 	const bool getInPrint();
 	const bool getInPrintDef();
-	Books* getSequel();
+	std::string getSequel();
 	const std::string getISBN();
 	const int toCout();
 

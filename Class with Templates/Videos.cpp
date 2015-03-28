@@ -31,8 +31,9 @@
 #define DEF_PRICE 0.00
 #define DEF_PUB 1970
 #define ELEMENT_ZERO 0
-#define DEF_director_ ""
-#define DEF_runTime_ 0.0
+#define DEF_DIRECTOR ""
+#define DEF_RUNTIME 0.0
+#define DEF_SEQUEL ""
 #define TEXT_WIDTH 20
 
 //Function prototype for insertion operator
@@ -41,9 +42,9 @@ std::ostream& operator<<(std::ostream &out, Videos &Video);
 //constructor
 Videos::Videos() : MediaItems()
 {
-	Videos::setExecutive(DEF_director_);
-	Videos::setrunTime(DEF_runTime_);
-	Videos::setSequel(NULL);
+	Videos::setExecutive(DEF_DIRECTOR);
+	Videos::setrunTime(DEF_RUNTIME);
+	Videos::setSequel_str(DEF_SEQUEL);
 
 	Videos::modified(false);
 }
@@ -85,10 +86,21 @@ int Videos::setrunTime(double new_runTime_)
 //Set Sequel
 int Videos::setSequel(Videos* new_sequel)
 {
-	Videos::sequel_ptr_ = new_sequel;
-	Videos::modified(true);
+	sequel_ = (*(new_sequel)).getName();
+
+	MediaItems::modified(true);
 	return 0;
 }
+
+int Videos::setSequel_str(std::string new_sequel)
+{
+	sequel_ = new_sequel;;
+
+	MediaItems::modified(true);
+	return 0;
+}
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Accessors
@@ -107,9 +119,9 @@ const double Videos::getrunTime()
 }
 
 //get sequel pointer
-Videos* Videos::getSequel()
+std::string Videos::getSequel()
 {
-	return sequel_ptr_;
+	return sequel_;
 }
 
 const int Videos::toCout()
@@ -177,24 +189,24 @@ std::ostream& operator<<(std::ostream &out, Videos &Video)
 		}
 
 		//display director_ if set
-		if (Video.getdirector() == DEF_director_);
+		if (Video.getdirector() == DEF_DIRECTOR);
 		else
 		{
 			out << std::left << std::setw(TEXT_WIDTH) << "  Director" << " : " << Video.getdirector() << std::endl;
 		}
 
 		//display runTime_ if set
-		if (Video.getrunTime() == DEF_runTime_);
+		if (Video.getrunTime() == DEF_RUNTIME);
 		else
 		{
 			out << std::left << std::setw(TEXT_WIDTH) << "  Run Time" << " : " << Video.getrunTime();
 		}
 
 		//display sequel if set
-		if (Video.getSequel() == NULL);
+		if (Video.getSequel() == DEF_SEQUEL);
 		else
 		{
-			out << std::left << std::setw(TEXT_WIDTH) << "  Sequel" << " : " << (*(Video.getSequel())).getName();
+			out << std::left << std::setw(TEXT_WIDTH) << "  Sequel" << " : " << Video.getSequel();
 		}
 
 		//open an arbitrary scope for displaying the elements in the item

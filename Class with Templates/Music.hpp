@@ -22,7 +22,7 @@ public:
 private:
 	std::string Producer_; //name_ of the producer of the music
 	double minutes_; // time in minutes of the music
-
+	//std::string sequel_;
 	GENRE musicGENRE_; //genre enum
 
 public:
@@ -34,11 +34,14 @@ public:
 	virtual int setExecutive(std::string);
 	int setrunTime(double);
 	int setGENRE(GENRE UDEF);
+	//int setSequel(MediaItems*);
+	//int setSequel(std::string);
 
 	//Accessors
 	const std::string getProducer();
 	const virtual double getrunTime();
 	const Music::GENRE getGENRE();
+	std::string getSequel();
 	const virtual int toCout();
 
 	//predicate

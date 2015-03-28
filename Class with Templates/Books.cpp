@@ -34,6 +34,7 @@
 #define DEF_PAGES 0
 #define DEF_PUB 1970
 #define DEF_ISBN ""
+#define DEF_SEQUEL ""
 #define TEXT_WIDTH 20
 
 //Function prototype for insertion operator
@@ -50,6 +51,8 @@ Books::Books() : MediaItems()
 	setSequel(NULL);
 
 	setISBN(DEF_ISBN);
+	
+	setSequel_str(DEF_SEQUEL);
 
 	modified(false);
 }
@@ -93,8 +96,17 @@ int Books::setInPrint(bool printStatus)
 //Set Sequel
 int Books::setSequel(Books* new_sequel)
 {
-	Books::sequel_ptr_ = new_sequel;
-	Books::modified(true);
+	sequel_ = (*(new_sequel)).getName();
+
+	MediaItems::modified(true);
+	return 0;
+}
+
+int Books::setSequel_str(std::string new_sequel)
+{
+	Books::sequel_ = new_sequel;;
+
+	MediaItems::modified(true);
 	return 0;
 }
 
@@ -129,9 +141,9 @@ const bool Books::getInPrintDef()
 }
 
 //get the sequel pointer
-Books* Books::getSequel()
+std::string Books::getSequel()
 {
-	return sequel_ptr_;
+	return sequel_;
 }
 
 //get the isbn number
@@ -237,10 +249,10 @@ std::ostream& operator<<(std::ostream &out, Books &Book)
 		}
 
 		//display sequel if set
-		if (Book.getSequel() == NULL);
+		if (Book.getSequel() == DEF_SEQUEL);
 		else
 		{
-			out << std::left << std::setw(TEXT_WIDTH) << "  Sequel" << " : " << (*(Book.getSequel())).getName() << std::endl;
+			out << std::left << std::setw(TEXT_WIDTH) << "  Sequel" << " : " << Book.getSequel() << std::endl;
 		}
 
 		//open an arbitrary scope for displaying the elements in the item

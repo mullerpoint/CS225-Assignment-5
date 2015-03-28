@@ -2,7 +2,7 @@
 //
 // Gary Muller
 // Spring 2015
-// CS 225 Assignment 4
+// CS 225 Assignment 5
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -53,13 +53,13 @@ std::locale* locale;
 //
 
 //Function Prototypes
-int init_mixed_array();
 void process_menu_in(char);
 void print_menu();
 int printAuthors();
 int printItems();
 int memUse();
 std::string trim(const std::string&, const std::string& whitespace = " \t");
+bool alphaSort(MediaItems*, MediaItems*);
 //
 
 
@@ -72,9 +72,9 @@ int main()
 {
 
 	//use the imbue functionality to make the output look pretty
-	std::locale mylocal("");
+	/*std::locale mylocal("");
 	locale = &mylocal;
-	std::cout.imbue(*locale);
+	std::cout.imbue(*locale);*/
 
 	//core program 
 	std::string menu_in;
@@ -131,7 +131,7 @@ int main()
 //Process Menu Function
 void process_menu_in(char inchar)
 {
-	std::cout.imbue(*locale);
+	/*std::cout.imbue(*locale);*/
 	std::cout.precision(2);
 
 	switch (toupper(inchar))
@@ -191,7 +191,8 @@ void process_menu_in(char inchar)
 	//delete the current item
 	case '-':
 	{
-		delete items[ItemNum];
+		void* itemToDel = items[ItemNum];
+		delete itemToDel;
 		items.erase(items.begin() + (ItemNum));
 		std::cout << "Item " << (ItemNum) << " deleted; Plese select a new item before continuing." << std::endl;
 		(ItemNum) = -1;
@@ -630,7 +631,7 @@ void process_menu_in(char inchar)
 	//sort items
 	case 'U':
 	{
-		std::sort(std::begin(items), std::end(items));
+		std::sort(std::begin(items), std::end(items), alphaSort);
 	}
 	break;
 
@@ -815,4 +816,10 @@ std::string trim(const std::string& str, const std::string& whitespace)
 	const auto strRange = strEnd - strBegin + 1;
 
 	return str.substr(strBegin, strRange);
+}
+
+//define less than operator for use with sort function
+bool alphaSort(MediaItems* lhs, MediaItems* rhs)
+{
+	return (int)(((*lhs).getName())[0]) < (int)(((*rhs).getName())[0]);
 }

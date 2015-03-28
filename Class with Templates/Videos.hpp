@@ -13,7 +13,7 @@ private:
 	std::string director_; //name_ of the director of the video
 	double runTime_; //runtime of the video
 
-	Videos* sequel_ptr_; //pointer to the sequel video item
+	std::string sequel_; //pointer to the sequel video item
 
 public:
 	//Constructor Destructor
@@ -24,11 +24,12 @@ public:
 	virtual int setExecutive(std::string);
 	int setrunTime(double);
 	int setSequel(Videos*);
+	int setSequel_str(std::string);
 
 	//accessors
 	const std::string getdirector();
 	const double getrunTime();
-	Videos* getSequel();
+	std::string getSequel();
 	const int toCout();
 
 	//predicate

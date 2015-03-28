@@ -37,6 +37,7 @@
 #define DEF_NAME ""
 #define DEF_PRICE 0.00
 #define DEF_PUB 1970
+#define DEF_SEQUEL ""
 #define TEXT_WIDTH 20
 
 //Function prototype for insertion operator
@@ -59,6 +60,7 @@ MediaItems::MediaItems()
 	element_count_ = 0; // set the element count to zero(0)
 
 	setAuthor(NULL); //set the author to a null pointer
+	setSequel_str(DEF_SEQUEL); //set the sequel to blank
 
 	hasData = false; //set the item hasdata flag to false
 
@@ -147,7 +149,16 @@ int MediaItems::setAuthor(Author* new_author)
 //Set Sequel
 int MediaItems::setSequel(MediaItems* new_sequel)
 {
-	MediaItems::sequel_ptr_ = new_sequel;
+	MediaItems::sequel_ = (*(new_sequel)).getName();
+	
+	MediaItems::modified(true);
+	return 0;
+}
+
+int MediaItems::setSequel_str(std::string new_sequel)
+{
+	MediaItems::sequel_ = new_sequel;;
+
 	MediaItems::modified(true);
 	return 0;
 }
@@ -201,9 +212,9 @@ std::list<Elements> MediaItems::getElement()
 }
 
 //get the sequel pointer
-MediaItems*  MediaItems::getSequel()
+std::string MediaItems::getSequel()
 {
-	return sequel_ptr_;
+	return sequel_;
 }
 
 //print out item
@@ -278,10 +289,10 @@ std::ostream& operator<<(std::ostream &out, MediaItems &MI)
 		}
 
 		//display sequel if set
-		if (MI.getSequel() == NULL);
+		if (MI.getSequel() == DEF_SEQUEL);
 		else
 		{
-			out << std::left << std::setw(TEXT_WIDTH) << "  Sequel" << " : " << (*(MI.getSequel())).getName() << std::endl;
+			out << std::left << std::setw(TEXT_WIDTH) << "  Sequel" << " : " << MI.getSequel() << std::endl;
 		}
 
 		//open an arbitrary scope for displaying the elements in the item
@@ -306,10 +317,6 @@ std::ostream& operator<<(std::ostream &out, MediaItems &MI)
 	return out;
 }//close the overload
 
-//define less than operator for use with sort function
-bool operator<(MediaItems& lhs, MediaItems& rhs)
-{
-	return lhs.getName() < rhs.getName();
-}
+
 
 #endif

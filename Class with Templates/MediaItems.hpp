@@ -31,7 +31,7 @@ protected:
 
 	static int active_; // number of media items active
 
-	MediaItems* sequel_ptr_;
+	std::string sequel_;
 
 public:
 	//Constructor Destructor
@@ -44,7 +44,8 @@ public:
 	int setPrice(double);
 	int addElement(int, int, std::string, int);
 	int setAuthor(Author*);
-	int setSequel(MediaItems*);
+	virtual int setSequel(MediaItems*);
+	virtual int setSequel_str(std::string);
 	virtual int modified(bool);
 	
 	//Accessors
@@ -54,7 +55,7 @@ public:
 	Author* getAuthor();
 	const double getPrice();
 	std::list<Elements> getElement();
-	MediaItems* getSequel();
+	std::string getSequel();
 	const virtual int toCout();
 
 	//Predicate Functions
