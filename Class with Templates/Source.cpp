@@ -72,9 +72,9 @@ int main()
 {
 
 	//use the imbue functionality to make the output look pretty
-	/*std::locale mylocal("");
+	std::locale mylocal("");
 	locale = &mylocal;
-	std::cout.imbue(*locale);*/
+	std::cout.imbue(*locale);
 
 	//core program 
 	std::string menu_in;
@@ -131,7 +131,7 @@ int main()
 //Process Menu Function
 void process_menu_in(char inchar)
 {
-	/*std::cout.imbue(*locale);*/
+	std::cout.imbue(*locale);
 	std::cout.precision(2);
 
 	switch (toupper(inchar))

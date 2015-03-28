@@ -25,8 +25,8 @@ public:
 	//Mutators
 	int setPages(int);
 	int setInPrint(bool);
-	int setSequel(Books*);
-	int setSequel_str(std::string);
+	//int setSequel(Books*);
+	//int setSequel_str(std::string);
 	int setISBN(std::string);
 
 	//Accessors

@@ -48,7 +48,7 @@ Books::Books() : MediaItems()
 	setInPrint(false);
 	in_print_def = true;
 
-	setSequel(NULL);
+	//setSequel(NULL);
 
 	setISBN(DEF_ISBN);
 	
@@ -94,21 +94,21 @@ int Books::setInPrint(bool printStatus)
 }
 
 //Set Sequel
-int Books::setSequel(Books* new_sequel)
-{
-	sequel_ = (*(new_sequel)).getName();
-
-	MediaItems::modified(true);
-	return 0;
-}
-
-int Books::setSequel_str(std::string new_sequel)
-{
-	Books::sequel_ = new_sequel;;
-
-	MediaItems::modified(true);
-	return 0;
-}
+//int Books::setSequel(Books* new_sequel)
+//{
+//	sequel_ = (*(new_sequel)).getName();
+//
+//	MediaItems::modified(true);
+//	return 0;
+//}
+//
+//int Books::setSequel_str(std::string new_sequel)
+//{
+//	Books::sequel_ = new_sequel;;
+//
+//	MediaItems::modified(true);
+//	return 0;
+//}
 
 //set book isbn
 int Books::setISBN(std::string new_isbn)

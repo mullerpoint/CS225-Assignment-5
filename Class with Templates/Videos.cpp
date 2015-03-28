@@ -84,21 +84,21 @@ int Videos::setrunTime(double new_runTime_)
 }
 
 //Set Sequel
-int Videos::setSequel(Videos* new_sequel)
-{
-	sequel_ = (*(new_sequel)).getName();
-
-	MediaItems::modified(true);
-	return 0;
-}
-
-int Videos::setSequel_str(std::string new_sequel)
-{
-	sequel_ = new_sequel;;
-
-	MediaItems::modified(true);
-	return 0;
-}
+//int Videos::setSequel(Videos* new_sequel)
+//{
+//	sequel_ = (*(new_sequel)).getName();
+//
+//	MediaItems::modified(true);
+//	return 0;
+//}
+//
+//int Videos::setSequel_str(std::string new_sequel)
+//{
+//	sequel_ = new_sequel;;
+//
+//	MediaItems::modified(true);
+//	return 0;
+//}
 
 
 

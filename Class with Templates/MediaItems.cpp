@@ -157,7 +157,7 @@ int MediaItems::setSequel(MediaItems* new_sequel)
 
 int MediaItems::setSequel_str(std::string new_sequel)
 {
-	MediaItems::sequel_ = new_sequel;;
+	MediaItems::sequel_ = new_sequel;
 
 	MediaItems::modified(true);
 	return 0;

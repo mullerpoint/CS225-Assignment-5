@@ -23,8 +23,8 @@ public:
 	//Mutators
 	virtual int setExecutive(std::string);
 	int setrunTime(double);
-	int setSequel(Videos*);
-	int setSequel_str(std::string);
+	//int setSequel(Videos*);
+	//int setSequel_str(std::string);
 
 	//accessors
 	const std::string getdirector();
