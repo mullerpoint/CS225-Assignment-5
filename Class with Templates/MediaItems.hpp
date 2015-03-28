@@ -4,7 +4,7 @@
 #ifndef MEDIAITEMS_CLASS_DEF_H_
 #define MEDIAITEMS_CLASS_DEF_H_
 
-#define DEF_ELEMENTS 15
+
 
 #ifndef MEDIA_DEPENDENCIES_H_
 #define MEDIA_DEPENDENCIES_H_
@@ -31,6 +31,8 @@ protected:
 
 	static int active_; // number of media items active
 
+	MediaItems* sequel_ptr_;
+
 public:
 	//Constructor Destructor
 	MediaItems();
@@ -42,8 +44,9 @@ public:
 	int setPrice(double);
 	int addElement(int, int, std::string, int);
 	int setAuthor(Author*);
+	int setSequel(MediaItems*);
 	virtual int modified(bool);
-
+	
 	//Accessors
 	const std::string getName();
 	const int getPubYear();
@@ -51,6 +54,7 @@ public:
 	Author* getAuthor();
 	const double getPrice();
 	std::list<Elements> getElement();
+	MediaItems* getSequel();
 	const virtual int toCout();
 
 	//Predicate Functions

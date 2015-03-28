@@ -144,6 +144,14 @@ int MediaItems::setAuthor(Author* new_author)
 	return 0;
 }
 
+//Set Sequel
+int MediaItems::setSequel(MediaItems* new_sequel)
+{
+	MediaItems::sequel_ptr_ = new_sequel;
+	MediaItems::modified(true);
+	return 0;
+}
+
 // set a modified flag
 int MediaItems::modified(bool data)
 {
@@ -190,6 +198,12 @@ const double MediaItems::getPrice()
 std::list<Elements> MediaItems::getElement()
 {
 	return element_;
+}
+
+//get the sequel pointer
+MediaItems*  MediaItems::getSequel()
+{
+	return sequel_ptr_;
 }
 
 //print out item
@@ -261,6 +275,13 @@ std::ostream& operator<<(std::ostream &out, MediaItems &MI)
 		else if (MI.getPrice() != DEF_PRICE)
 		{
 			out << std::left << std::setw(TEXT_WIDTH) << "  Price" << " : $" << std::fixed << MI.getPrice() << std::endl;
+		}
+
+		//display sequel if set
+		if (MI.getSequel() == NULL);
+		else
+		{
+			out << std::left << std::setw(TEXT_WIDTH) << "  Sequel" << " : " << (*(MI.getSequel())).getName() << std::endl;
 		}
 
 		//open an arbitrary scope for displaying the elements in the item

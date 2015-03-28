@@ -40,13 +40,12 @@ int interactive = _isatty(_fileno(stdin)); //windowns statement
 
 //define global pointers for media item objects
 std::vector<MediaItems *>items;
-int ItemNum = 0;
+int ItemNum = -1;
 //
 
 //define global pointers for author objects
 std::vector<Author *>Authors;
 int AuthNum = 0;
-int totalAuths = 0;
 //
 
 //define global locale pointer for the locale imbue functionality
@@ -81,12 +80,23 @@ int main()
 	std::string menu_in;
 	print_menu();
 
+	std::string itmstr;
 
 	if (interactive)
 	{
+
+
 		while (!done)
 		{
-			std::cout << std::endl << "Menu [" << ItemNum << "]: ";
+			if (ItemNum == -1)
+			{
+				itmstr = "-";
+			}
+			else
+			{
+				itmstr = std::to_string(ItemNum);
+			}
+			std::cout << std::endl << "Menu [" << itmstr << "]: ";
 			std::getline(std::cin, menu_in);
 			process_menu_in(menu_in[0]);
 		}
@@ -95,7 +105,15 @@ int main()
 	{
 		while (!done)
 		{
-			std::cout << std::endl << "Menu [" << ItemNum << "]: ";
+			if (ItemNum == -1)
+			{
+				itmstr = "-";
+			}
+			else
+			{
+				itmstr = std::to_string(ItemNum);
+			}
+			std::cout << std::endl << "Menu [" << itmstr << "]: ";
 			std::cin >> menu_in;
 			process_menu_in(menu_in[0]);
 		}
@@ -129,7 +147,6 @@ void process_menu_in(char inchar)
 	//add new item and set current item to that item
 	case '+':
 	{
-		//TODO: function that asks for item type and create the item
 		//query user as to what kind of item they want to add
 		std::cout << "What kind of item do you want to add : (M)usic, (V)ideo, (B)ook, (I)tem" << std::endl;
 		std::string type;
@@ -144,7 +161,6 @@ void process_menu_in(char inchar)
 		{
 			std::cin >> type;
 		}
-
 
 		//based on the type create the item
 		switch (toupper(type[0]))
@@ -176,8 +192,9 @@ void process_menu_in(char inchar)
 	case '-':
 	{
 		delete items[ItemNum];
-		items.erase(items.begin() + ItemNum, items.begin() + ItemNum);
-		ItemNum = items.size();
+		items.erase(items.begin() + (ItemNum));
+		std::cout << "Item " << (ItemNum) << " deleted; Plese select a new item before continuing." << std::endl;
+		(ItemNum) = -1;
 	}
 	break;
 
@@ -200,7 +217,7 @@ void process_menu_in(char inchar)
 		//validate input
 		if ((new_itemNum >= 0) && (new_itemNum <= (items.size())))
 		{
-			ItemNum = new_itemNum;
+			(ItemNum) = new_itemNum;
 		}
 		else{
 			std::cout << "Please enter a valid number beteen 0-" << items.size();
@@ -215,8 +232,15 @@ void process_menu_in(char inchar)
 	// clear item menu option
 	case '0':
 	{
-		(*items[ItemNum]).clear();
-		std::cout << "Item " << ItemNum << " Cleared" << std::endl;
+		if (ItemNum == -1)
+		{
+			std::cout << "Error: You cannont delete an empty vector" << std::endl;
+		}
+		else
+		{
+			(*items[ItemNum]).clear();
+			std::cout << "Item " << (ItemNum) << " Cleared" << std::endl;
+		}
 	}
 	break;
 
@@ -252,7 +276,7 @@ void process_menu_in(char inchar)
 	{
 		Author* temp_ptr = new Author;
 		Authors.push_back(temp_ptr);
-		AuthNum = Authors.size() - 1 ;
+		AuthNum = Authors.size() - 1;
 
 		int born, died;
 		std::string name;
@@ -290,7 +314,7 @@ void process_menu_in(char inchar)
 	// display item menu option
 	case 'D':
 	{
-		std::cout << std::endl << "Item [" << ItemNum << "] :" << std::endl;
+		std::cout << std::endl << "Item [" << (ItemNum) << "] :" << std::endl;
 		(*items[ItemNum]).toCout();
 	}
 	break;
@@ -480,6 +504,7 @@ void process_menu_in(char inchar)
 		{
 			std::cout << "There are no Music items to sort" << std::endl;
 		}
+
 		// if a music was found print out 
 		else if (found == true)
 		{
@@ -526,7 +551,7 @@ void process_menu_in(char inchar)
 		print_menu();
 		break;
 
-		// enter item name_ menu option
+		// enter item name menu option
 	case 'N':
 	{
 		std::string new_name;
@@ -602,6 +627,7 @@ void process_menu_in(char inchar)
 	}
 	break;
 
+	//sort items
 	case 'U':
 	{
 		std::sort(std::begin(items), std::end(items));
@@ -683,7 +709,7 @@ int printAuthors()
 			//isempty() returns the hasData value which is false for an object with no data and true for an object with data, hence the ! to invert the return value
 			else
 			{
-				std::cout << std::endl << "Author [" << count << "] :" << std::endl;
+				std::cout << std::endl << std::endl << "Author [" << count << "] :" << std::endl;
 				(*Authors[count]).toCout();
 			}
 			count++;
@@ -709,13 +735,13 @@ int printItems()
 	{
 		unsigned int count = 0;
 
-		while (count <= (items.size() - 1)) 
-		//the '- 1' is to account for the fact that item '1' is array position '0'
+		while (count <= (items.size() - 1))
+			//the '- 1' is to account for the fact that item '1' is array position '0'
 		{
 			if ((*items[count]).isEmpty());
 			else //if (mixed_array[count].isEmpty() == true)
 			{
-				std::cout << std::endl << "Item [" << count << "]" << std::endl;
+				std::cout << std::endl << std::endl << "Item [" << count << "]" << std::endl;
 				(*items[count]).toCout();
 			}
 			count++;
@@ -760,13 +786,20 @@ int memUse()
 
 
 	std::cout
-		<< std::endl << std::left << std::setw(28) << "Total Memory Used" << " : " << (sizeof(MediaItems)*numMIs +
-		(sizeof(Author)*numAuths) + sizeof(Books)*numBooks + sizeof(Music)*numMusic + sizeof(Videos)*numVideos) << " Bytes"
-		<< std::endl << std::left << std::setw(28) << "  Authors" << " : " << sizeof(Author)*numAuths << " Bytes"
-		<< std::endl << std::left << std::setw(28) << "  Media Items" << " : " << sizeof(MediaItems)*numMIs << " Bytes"
-		<< std::endl << std::left << std::setw(28) << "  Book Items" << " : " << sizeof(Books)*numBooks << " Bytes"
-		<< std::endl << std::left << std::setw(28) << "  Music Items" << " : " << sizeof(Music)*numMusic << " Bytes"
-		<< std::endl << std::left << std::setw(28) << "  Video Items" << " : " << sizeof(Videos)*numVideos << " Bytes";
+		<< std::endl << "[" << std::setw(3) << std::right << (numAuths + numBooks + numMIs + numMusic + numVideos) << "] "
+		<< std::left << std::setw(TEXT_WIDTH + 2) << "Total Memory Used" << " : "
+		<< (sizeof(MediaItems)*numMIs + (sizeof(Author)*numAuths) + sizeof(Books)*numBooks +
+		sizeof(Music)*numMusic + sizeof(Videos)*numVideos) << " Bytes"
+		<< std::endl << "  [" << std::setw(3) << std::right << numAuths << "] "
+		<< std::left << std::setw(TEXT_WIDTH) << "Authors" << " : " << sizeof(Author)*numAuths << " Bytes"
+		<< std::endl << "  [" << std::setw(3) << std::right << numMIs << "] "
+		<< std::left << std::setw(TEXT_WIDTH) << "Media Items" << " : " << sizeof(MediaItems)*numMIs << " Bytes"
+		<< std::endl << "  [" << std::setw(3) << std::right << numBooks << "] "
+		<< std::left << std::setw(TEXT_WIDTH) << "Book Items" << " : " << sizeof(Books)*numBooks << " Bytes"
+		<< std::endl << "  [" << std::setw(3) << std::right << numMusic << "] "
+		<< std::left << std::setw(TEXT_WIDTH) << "Music Items" << " : " << sizeof(Music)*numMusic << " Bytes"
+		<< std::endl << "  [" << std::setw(3) << std::right << numVideos << "] "
+		<< std::left << std::setw(TEXT_WIDTH) << "Video Items" << " : " << sizeof(Videos)*numVideos << " Bytes";
 
 	return 0;
 }
